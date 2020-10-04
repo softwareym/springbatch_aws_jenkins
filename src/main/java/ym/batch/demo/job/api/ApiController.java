@@ -28,8 +28,8 @@ public class ApiController {
 
         HashMap<String, Object> result = new HashMap<>();
         HashMap<String, Object> map = apiService.selectAllJobInstance();
-        map.put("result", map);
-        return map;
+        result.put("result", map);
+        return result;
 
     }
 }
