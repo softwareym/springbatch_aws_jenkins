@@ -102,7 +102,7 @@ public class ApiSampleConfiguration {
     public JdbcBatchItemWriter<MicroDust> collectWriter(){              //db에 데이터를 쓴다.
         return new JdbcBatchItemWriterBuilder<MicroDust>()
                 .dataSource(dataSource)
-                .sql("INSERT INTO MYUSER (ID, NAME) values (:id, :name)")       //todo ***
+                .sql(" insert into MicroDust (dataDate, itemCode, districtName, moveName, issueDate, issueTime, issueVal, issueGbn, clearDate, clearTime, clearVal) VALUES (:dataDate, :itemCode, :districtName, :moveName, :issueDate, :issueTime, :issueVal, :issueGbn, :clearDate, :clearTime, :clearVal)")
                 .beanMapped()
                 .build();
     }
