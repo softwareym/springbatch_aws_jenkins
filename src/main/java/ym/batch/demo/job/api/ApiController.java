@@ -22,7 +22,9 @@ public class ApiController {
     @Autowired
     private ApiMapper apiMapper;
 
-
+    /**
+     * db연결 test
+     */
     @GetMapping("/test")
     public HashMap<String, Object> selectAllJobInstance() throws Exception {
 
