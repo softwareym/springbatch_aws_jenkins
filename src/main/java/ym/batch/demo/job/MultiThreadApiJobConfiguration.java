@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.persistence.EntityManagerFactory;
+//import javax.persistence.EntityManagerFactory;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -29,6 +29,9 @@ public class MultiThreadApiJobConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
+
+    /*
+    //pom.xml => spring-boot-starter-data-jpa 필요
     private final EntityManagerFactory entityManagerFactory;
 
     private int chunkSize;
@@ -46,7 +49,6 @@ public class MultiThreadApiJobConfiguration {
     }
 
 
-    /*
     @Bean(name = JOB_NAME+"taskPool")
     public TaskExecutor executor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor(); // (2)

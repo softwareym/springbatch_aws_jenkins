@@ -3,7 +3,7 @@
 ---
 spring:
   profiles:
-    active: real
+    active: local
 
 spring.batch.job.names: ${job.name:NONE}
 ---
@@ -15,6 +15,7 @@ spring:
       username: sa
       password:
       driver-class-name: org.h2.Driver
+
 ---
 spring:
   profiles: real
