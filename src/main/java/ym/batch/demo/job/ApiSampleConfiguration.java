@@ -73,12 +73,11 @@ public class ApiSampleConfiguration {
     public ItemReader<MicroDust> restCollectReader(){
         return new ItemReader<MicroDust>(){
             @Override
-            public MicroDust read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+            public MicroDust read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException, IllegalArgumentException {
                 if (checkRestCall == false){//한번도 호출 않았는지 체크
 
                     // url 을 넘겨주는 아규먼트가 String 타입이면 restTemplate.getForObject.. URL 인코딩이 자동으로 발생
                     //String url = "http://openapi.airkorea.or.kr/openapi/services/rest/UlfptcaAlarmInqireSvc/getUlfptcaAlarmInfo";
-                    //String serviceKey = "qfkFclseeogGMHMInM5T9naoiRhtjxGK6feqrIz4WqK4Nw68DkyuSLQlwVghnRLKg0HFCIGughqC7f3WFMHKgQ%3D%3D";
 
                     String url = microDustUrl;
                     String serviceKey = servicekey;
