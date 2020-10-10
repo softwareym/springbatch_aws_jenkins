@@ -1,15 +1,13 @@
 package ym.batch.demo.job.item;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
  * mysql script
- create table MicroDust (
+ create table tblMicroDust (
      seq         	bigint not null auto_increment,
      dataDate    	varchar(100),
      itemCode	 	varchar(100),
@@ -21,20 +19,16 @@ import org.springframework.stereotype.Component;
      issueGbn		varchar(100),
      clearDate		varchar(100),
      clearTime		varchar(100),
-     clearVal		bigint
+     clearVal		bigint,
      primary key (seq)
  ) engine = InnoDB;
 
  */
-
-@Component                              //property에서 value 주입하기 위해 사용
+@NoArgsConstructor                     //매개변수 없는 생성자 새성
 @ToString
-@Setter
 @Getter
+@Setter
 public class MicroDust {
-
-    @Value("${openapi.servicekey}")
-    private String servicekey;
 
     private String dataDate;
     private String itemCode;
