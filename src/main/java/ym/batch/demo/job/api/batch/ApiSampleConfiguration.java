@@ -1,10 +1,7 @@
-package ym.batch.demo.job;
+package ym.batch.demo.job.api.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -18,18 +15,11 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-import ym.batch.demo.job.item.MicroDust;
+import ym.batch.demo.job.api.service.ApiService;
+import ym.batch.demo.job.api.item.MicroDust;
 
 import javax.sql.DataSource;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,7 +36,7 @@ public class ApiSampleConfiguration {
     private final JobBuilderFactory jobBuilderFactory;//Job 생성자
     private final StepBuilderFactory stepBuilderFactory;//Step 생성자
     private final DataSource dataSource;//데이터 소스
-
+    private final ApiService apiService;
     /*
         *Chunk Size : 한번에 처리될 트랜잭션 단위
         [Reader와 > processor에서 가공된 데이터들을 별도의 공간에 모은 뒤,
@@ -87,61 +77,8 @@ public class ApiSampleConfiguration {
         return new ItemReader<MicroDust>(){
             @Override
             public MicroDust read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException, IllegalArgumentException {
-                if (checkRestCall == false){//한번도 호출 않았는지 체크
 
-                    // url 을 넘겨주는 아규먼트가 String 타입이면 restTemplate.getForObject.. URL 인코딩이 자동으로 발생
-                    //String url = "http://openapi.airkorea.or.kr/openapi/services/rest/UlfptcaAlarmInqireSvc/getUlfptcaAlarmInfo";
-
-                    String url = microDustUrl;
-                    String serviceKey = servicekey;
-
-                    String decodeServiceKey = URLDecoder.decode(serviceKey, "UTF-8");
-
-                    RestTemplate restTemplate = new RestTemplate();
-                    HttpHeaders httpHeaders = new HttpHeaders();
-                    httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));  // Response Header to UTF-8
-
-                    UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).queryParam("serviceKey", decodeServiceKey)
-                            .queryParam("year", "2020")
-                            .queryParam("numOfRows", "10")
-                            .queryParam("pageNo", "1")
-                            .queryParam("_returnType", "json")
-                            .build(false); // 자동 Encoding 막기
-
-                    String response = restTemplate.getForObject(uri.toUriString(), String.class);
-
-                    try {
-                        JSONParser jsonParser = new JSONParser();
-                        JSONObject jsonObject = (JSONObject) jsonParser.parse(response);      //JSON데이터를 넣어 JSON Object 로 만들어 준다.
-                        JSONArray listInfoArray = (JSONArray) jsonObject.get("list");        //list 배열을 추출
-
-                        MicroDust[] retArray = new MicroDust[listInfoArray.size()];         //호출 결과를 우선 배열에 넣고, 리스트로 변환할 예정
-
-                        for (int i = 0; i < listInfoArray.size(); i++) {
-                            JSONObject listObject = (JSONObject) listInfoArray.get(i);   //배열 안에 있는것도 JSON형식 이기 때문에 JSON Object 로 추출
-                            retArray[i] = new MicroDust();
-
-                            //System.out.println(listObject.get("clearDate")); //JSON name으로 추출
-                            retArray[i].setDataDate(listObject.get("dataDate").toString());
-                            retArray[i].setClearDate(listObject.get("clearDate").toString());
-                            retArray[i].setItemCode(listObject.get("itemCode").toString());
-                            retArray[i].setDistrictName(listObject.get("districtName").toString());
-                            retArray[i].setMoveName(listObject.get("moveName").toString());
-                            retArray[i].setIssueDate(listObject.get("issueDate").toString());
-                            retArray[i].setIssueTime(listObject.get("issueTime").toString());
-                            retArray[i].setIssueVal(Integer.parseInt(listObject.get("issueVal").toString()));
-                            retArray[i].setIssueGbn(listObject.get("issueGbn").toString());
-                            retArray[i].setClearDate(listObject.get("clearDate").toString());
-                            retArray[i].setClearTime(listObject.get("clearTime").toString());
-                            retArray[i].setClearVal(Integer.parseInt(listObject.get("clearVal").toString()));
-                        }
-                        collectData = Arrays.asList(retArray);//배열을 리스트로 변환
-                        //log.info("Rest Call result : >>>>>>>" + collectData);
-                        checkRestCall = true; //다음 read() 부터는 재호출 방지하기 위해 true로 변경
-                    }catch (Exception e){
-                        log.info("api not accessible(wrong request)");
-                    }
-                }
+                List<MicroDust> collectData = apiService.callApiMicroDustData(microDustUrl, servicekey, checkRestCall);
 
                 MicroDust nextCollect = null; //ItemReader는 반복문으로 동작한다. 하나씩 Writer로 전달해야 한다.
                 if (nextIndex < collectData.size()) {//전체 리스트에서 0부터 하나씩 추출해서, 하나씩 Writer로 전달

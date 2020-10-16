@@ -1,4 +1,4 @@
-package ym.batch.demo.job.item;
+package ym.batch.demo.job.api.item;
 
 import lombok.*;
 

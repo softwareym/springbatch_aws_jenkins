@@ -1,12 +1,4 @@
-package ym.batch.demo.job.item;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+package ym.batch.demo.job.sample.item;
 
 public class Pay{
 

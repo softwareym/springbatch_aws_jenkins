@@ -1,4 +1,4 @@
-package ym.batch.demo.job;
+package ym.batch.demo.job.sample.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +12,10 @@ import org.springframework.batch.item.database.Order;
 import org.springframework.batch.item.database.PagingQueryProvider;
 import org.springframework.batch.item.database.builder.JdbcPagingItemReaderBuilder;
 import org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import ym.batch.demo.job.api.service.ApiService;
-import ym.batch.demo.job.item.Pay;
+
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -33,7 +31,7 @@ public class JdbcPagingItemReaderJobConfiguration {
     private final DataSource dataSource; // DataSource DI
 
     private static final int chunkSize = 10;
-
+/*
     @Bean
     public Job jdbcPagingItemReaderJob() throws Exception {
         return jobBuilderFactory.get("jdbcPagingItemReaderJob")
@@ -41,14 +39,13 @@ public class JdbcPagingItemReaderJobConfiguration {
                 .build();
     }
 
-    /**
      *  <Pay, Pay>chunk(chunkSize)
      *  => 첫번째 Pay는 Reader에서 반환할 타입이고, 두번째 Pay는 Writer에 파라미터로 넘어올 타입이다.*
      *     chunkSize로 인자값을 넣은 경우는 Reader & Writer가 묶일 Chunk 트랜잭션 범위이다.
      *
      *   Reader에서 읽은 데이터에 대해 크게 변경된 로직이 없다면 writer만 구현하면 된다.
      *   processor는 필수가 아니다.
-     */
+
     @Bean
     public Step jdbcPagingItemReaderStep() throws Exception {
         return stepBuilderFactory.get("jdbcPagingItemReadeSrtep")
@@ -94,5 +91,5 @@ public class JdbcPagingItemReaderJobConfiguration {
         queryProvider.setSortKeys(sortKeys);
         return queryProvider.getObject();
     }
-
+*/
 }

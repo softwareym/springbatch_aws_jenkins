@@ -1,4 +1,4 @@
-package ym.batch.demo.job;
+package ym.batch.demo.job.sample.batch;
 
 
 import lombok.RequiredArgsConstructor;
