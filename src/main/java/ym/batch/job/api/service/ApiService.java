@@ -17,15 +17,12 @@ import ym.batch.job.api.item.MicroDust;
 
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Transactional
 @Service
-public class ApiService {
+public class ApiService{
 
     @Autowired
     ApiMapper apiMapper;
@@ -35,7 +32,7 @@ public class ApiService {
     }
 
     //미세먼지 api 호출 및 json 파싱
-    public List<MicroDust> callApiMicroDustData(String url, String serviceKey, boolean checkRestCall) throws Exception {
+    public List<MicroDust> callApiMicroDustData(String url, String serviceKey) throws Exception {
         List<MicroDust> collectData = new ArrayList<>();
         String decodeServiceKey = URLDecoder.decode(serviceKey, "UTF-8");
 
@@ -85,3 +82,24 @@ public class ApiService {
         return collectData;
     }
 }
+
+
+/*
+public class ApiService extends ApiServiceIntertaceTemplate{
+    public ApiServiceIntertaceImpl(RestTemplate r) {
+        super(r);
+    }
+    public List<String> respinseCall(){
+        String url = urlMake();
+
+    }
+
+
+    @Override
+    public String urlMake(Map<String, Object> params) {
+        return super.urlMake(params);
+    }
+
+    //이메일 발송
+}
+*/

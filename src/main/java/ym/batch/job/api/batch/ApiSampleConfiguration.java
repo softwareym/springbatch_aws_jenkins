@@ -79,7 +79,7 @@ public class ApiSampleConfiguration {
             public MicroDust read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException, IllegalArgumentException {
 
                 if (checkRestCall == false) {   //호출되었는지 체크
-                    collectData = apiService.callApiMicroDustData(microDustUrl, servicekey, checkRestCall);
+                    collectData = apiService.callApiMicroDustData(microDustUrl, servicekey);
                     checkRestCall = true; //다음 read() 부터는 재호출 방지하기 위해 true로 변경
                 }
                 MicroDust nextCollect = null; //ItemReader는 반복문으로 동작한다. 하나씩 Writer로 전달해야 한다.
