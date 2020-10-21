@@ -1,10 +1,8 @@
-package ym.batch.job.api.service;
+package ym.batch.job.common.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -14,12 +12,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
-public abstract class ApiServiceRestTemplate implements ApiServiceIntertace{
+public abstract class ApiCommonService implements ApiCommonInterface {
 
     /**
      * 요청 url&파라미터 생성
@@ -59,7 +55,4 @@ public abstract class ApiServiceRestTemplate implements ApiServiceIntertace{
         String response = restTemplate.getForObject(uriComp.toUriString(), String.class);
         return response;
     }
-
-
-
 }
