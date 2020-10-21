@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 import ym.batch.job.api.item.MicroDust;
 
 import java.util.HashMap;
@@ -19,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ApiServiceTest {
+public class ApiServiceTest extends ApiServiceRestTemplate{
 
-    @Rule
-    ExpectedException expectedException =  ExpectedException.none();
+    //@Rule
+    //ExpectedException expectedException =  ExpectedException.none();
 
     @Autowired
     public ApiService apiService;
@@ -33,13 +34,16 @@ public class ApiServiceTest {
     @Value("${openapi.microdustUrl}")
     private String microDustUrl;
 
+    public ApiServiceTest() {
+        super();
+    }
 
     public void mysql_db연동_호출() throws Exception {
         HashMap<String,Object> result = apiService.selectAllJobInstance();
         assertNotNull(result);
     }
 
-    //@Test
+    /*
     public void 미세먼지api_호출_성공() throws Exception{
         //given
         //when
@@ -59,7 +63,9 @@ public class ApiServiceTest {
         assertEquals(result.size(),0);
     }
 
-    /*
+     */
+
+/*
     public void 미세먼지api_호출_정상적이지않은_url인경우(){
 
     }
@@ -71,7 +77,6 @@ public class ApiServiceTest {
         List<MicroDust> result = apiService.callApiMicroDustData(microDustUrl, servicekey);
 
     }
-    */
 
 
     public void 미세먼지api_이미호출() throws Exception{
@@ -82,5 +87,5 @@ public class ApiServiceTest {
         //then
         assertEquals(result.size(), 0);
     }
-
+*/
 }

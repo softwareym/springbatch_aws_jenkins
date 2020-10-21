@@ -11,10 +11,12 @@ import java.util.HashMap;
 @Repository
 public class ApiMapper {
 
-    @Autowired
-    @Qualifier("sqlSession")
-    private SqlSessionTemplate sqlSession;
+    private final SqlSessionTemplate sqlSession;
     private final static String NAMESPACE = "ym.batch.job.api.repository.ApiMapper.";
+
+    public ApiMapper(@Qualifier("sqlSession") SqlSessionTemplate sqlSession) {
+        this.sqlSession = sqlSession;
+    }
 
     public HashMap<String, Object> selectAllJobInstance() throws Exception{
         return sqlSession.selectOne(NAMESPACE+"selectAllJobInstance");
