@@ -27,48 +27,35 @@ import java.util.*;
 @Slf4j
 @Transactional
 @Service
-public class ApiService /* extends ApiServiceRestTemplate */{
+public class ApiService extends ApiServiceRestTemplate {
 
     @Autowired
     ApiMapper apiMapper;
 
-    /*
-    @Autowired
     public ApiService() {
         super();
     }
-    */
 
-
-    public HashMap<String, Object> selectAllJobInstance() throws Exception {
-        return apiMapper.selectAllJobInstance();
+    @Override
+    public UriComponentsBuilder urlMake(String url, String serviceKey, Map<String, String> qParam) throws UnsupportedEncodingException {
+        return super.urlMake(url, serviceKey, qParam);
     }
 
-    /*
     @Override
-    public String getResponse(String uri) {
+    public String getResponse(UriComponentsBuilder uri) {
         return super.getResponse(uri);
     }
 
-    @Override
-    public String urlMake(String url, Map<String, String> qParam) throws UnsupportedEncodingException {
-        return super.urlMake(url, qParam);
-    }
-
-
-
-    //미세먼지 api 호출 및 json 파싱
+    //미세먼지 api 호출
     public List<MicroDust> callApiMicroDustData(String url, String serviceKey) throws Exception {
-        String decodeServiceKey = URLDecoder.decode(serviceKey, "UTF-8");
 
         HashMap<String, String> qParam = new HashMap<>();
-        qParam.put("serviceKey", decodeServiceKey);
         qParam.put("year", "2020");
         qParam.put("numOfRows", "10");
         qParam.put("pageNo", "1");
         qParam.put("_returnType", "json");
 
-        String callUrl = urlMake(url, qParam);          //요청 url&파라미터 생성
+        UriComponentsBuilder callUrl = urlMake(url, serviceKey, qParam);          //요청 url&파라미터 생성
         String response = getResponse(callUrl);        //요청한 응답데이터 get
 
         List<MicroDust> collectData = new ArrayList<>();
@@ -77,6 +64,7 @@ public class ApiService /* extends ApiServiceRestTemplate */{
         return collectData;
     }
 
+    //api 호출 응답 json 파싱
     public List<MicroDust> getDataParse(String response){
         List<MicroDust> collectData = new ArrayList<>();
 
@@ -112,5 +100,8 @@ public class ApiService /* extends ApiServiceRestTemplate */{
         return collectData;
     }
 
-     */
+    public HashMap<String, Object> selectAllJobInstance() throws Exception {
+        return apiMapper.selectAllJobInstance();
+    }
+
 }
