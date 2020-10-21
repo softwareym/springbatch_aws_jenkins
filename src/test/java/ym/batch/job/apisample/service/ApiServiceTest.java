@@ -1,26 +1,22 @@
-package ym.batch.job.api.service;
+package ym.batch.job.apisample.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
-import ym.batch.job.api.item.MicroDust;
+import ym.batch.job.common.service.ApiCommonInterface;
+import ym.batch.job.common.service.ApiCommonService;
 
 import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ApiServiceTest extends ApiServiceRestTemplate{
+public class ApiServiceTest extends ApiCommonService {
 
     //@Rule
     //ExpectedException expectedException =  ExpectedException.none();

@@ -1,8 +1,6 @@
-package ym.batch.job.api.repository;
+package ym.batch.job.apisample.repository;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 

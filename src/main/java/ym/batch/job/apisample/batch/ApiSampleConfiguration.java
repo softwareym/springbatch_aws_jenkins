@@ -1,10 +1,7 @@
-package ym.batch.job.api.batch;
+package ym.batch.job.apisample.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -18,21 +15,11 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-import ym.batch.job.api.service.ApiService;
-import ym.batch.job.api.item.MicroDust;
-import ym.batch.job.api.service.ApiServiceIntertace;
-import ym.batch.job.api.service.ApiServiceRestTemplate;
+import ym.batch.job.apisample.service.ApiService;
+import ym.batch.job.apisample.item.MicroDust;
 
 import javax.sql.DataSource;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,7 +36,7 @@ public class ApiSampleConfiguration {
     private final JobBuilderFactory jobBuilderFactory;//Job 생성자
     private final StepBuilderFactory stepBuilderFactory;//Step 생성자
     private final DataSource dataSource;//데이터 소스
-    private final ApiService apiService;
+    final ApiService apiService;
 
     /*
         *Chunk Size : 한번에 처리될 트랜잭션 단위
@@ -91,7 +78,6 @@ public class ApiSampleConfiguration {
         return new ItemReader<MicroDust>(){
             @Override
             public MicroDust read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException, IllegalArgumentException {
-
 
                 if (checkRestCall == false) {   //호출되었는지 체크
                     collectData = apiService.callApiMicroDustData(microDustUrl, servicekey);

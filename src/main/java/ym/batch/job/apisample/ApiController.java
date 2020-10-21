@@ -1,4 +1,4 @@
-package ym.batch.job.api;
+package ym.batch.job.apisample;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ym.batch.job.api.repository.ApiMapper;
-import ym.batch.job.api.service.ApiService;
+import ym.batch.job.apisample.repository.ApiMapper;
+import ym.batch.job.apisample.service.ApiService;
 
 import java.util.HashMap;
 

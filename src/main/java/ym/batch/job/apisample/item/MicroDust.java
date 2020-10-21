@@ -1,9 +1,6 @@
-package ym.batch.job.api.item;
+package ym.batch.job.apisample.item;
 
 import lombok.*;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * mysql script

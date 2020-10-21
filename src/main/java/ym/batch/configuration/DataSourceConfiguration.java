@@ -13,7 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
-//@MapperScan(basePackages = "ym.batch.job.api.repository.**", sqlSessionFactoryRef = "sqlSessionFactory")
+
+//@MapperScan(basePackages = "ym.batch.job.apisample.repository.**", sqlSessionFactoryRef = "sqlSessionFactory")
 @Configuration
 public class DataSourceConfiguration {
 

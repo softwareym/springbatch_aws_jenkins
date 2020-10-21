@@ -1,37 +1,29 @@
-package ym.batch.job.api.service;
+package ym.batch.job.apisample.service;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import ym.batch.job.api.repository.ApiMapper;
-import ym.batch.job.api.item.MicroDust;
+import ym.batch.job.apisample.repository.ApiMapper;
+import ym.batch.job.apisample.item.MicroDust;
+import ym.batch.job.common.service.ApiCommonService;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.util.*;
 
 @Slf4j
 @Transactional
 @Service
-public class ApiService extends ApiServiceRestTemplate {
+public class ApiService extends ApiCommonService {
 
     @Autowired
     ApiMapper apiMapper;
 
+    //생성자 - 상ㅅ초기화
     public ApiService() {
         super();
     }
