@@ -20,13 +20,13 @@ import java.util.*;
 @Service
 public class ApiService extends ApiCommonService {
 
-    @Autowired
-    ApiMapper apiMapper;
-
-    //생성자 - 상ㅅ초기화
+    //생성자 - 초기화
     public ApiService() {
         super();
     }
+
+    @Autowired
+    ApiMapper apiMapper;
 
     @Override
     public UriComponentsBuilder urlMake(String url, String serviceKey, Map<String, String> qParam) throws UnsupportedEncodingException {

@@ -36,7 +36,7 @@ public class ApiSampleConfiguration {
     private final JobBuilderFactory jobBuilderFactory;//Job 생성자
     private final StepBuilderFactory stepBuilderFactory;//Step 생성자
     private final DataSource dataSource;//데이터 소스
-    final ApiService apiService;
+    private final ApiService apiService;
 
     /*
         *Chunk Size : 한번에 처리될 트랜잭션 단위

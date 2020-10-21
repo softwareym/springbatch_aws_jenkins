@@ -4,7 +4,7 @@ CREATE TABLE tblMicroDust(
     seq LONG PRIMARY KEY AUTO_INCREMENT
     , dataDate VARCHAR NOT NULL
     , itemCode VARCHAR
-    , districtName varchar
+    , districtName VARCHAR
     , moveName VARCHAR
     , issueDate VARCHAR
     , issueTime VARCHAR
@@ -15,4 +15,20 @@ CREATE TABLE tblMicroDust(
     , clearVal INT
 );
 
+DROP TABLE IF EXISTS tblStation;
+CREATE TABLE tblStation(
+     seq LONG PRIMARY KEY AUTO_INCREMENT
+    , stationName VARCHAR NOT NULL
+    , addr VARCHAR
+    , year INT
+    , operationAgency VARCHAR
+    , stationPhoto VARCHAR
+    , stationVrml VARCHAR
+    , map VARCHAR
+    , mangName VARCHAR
+    , measureItem VARCHAR
+    , dmx double
+    , dmy double
+    , regdate VARCHAR
+);
 
