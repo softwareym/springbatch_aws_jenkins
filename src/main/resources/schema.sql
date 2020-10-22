@@ -32,3 +32,29 @@ CREATE TABLE tblStation(
     , regdate VARCHAR
 );
 
+
+DROP TABLE IF EXISTS tblAirData;
+CREATE TABLE tblAirData(
+     seq LONG PRIMARY KEY AUTO_INCREMENT
+    , dataTime VARCHAR NOT NULL
+    , so2Value double
+    , coValue double
+    , o3Value double
+    , no2Value double
+    , pm10Value double
+    , pm10Value24 double
+    , pm25Value double
+    , pm25Value24 double
+    , khaiValue double
+    , khaiGrade double
+    , so2Grade double
+    , coGrade double
+    , o3Grade double
+    , no2Grade double
+    , pm10Grade double
+    , pm25Grade double
+    , pm10Grade1h double
+    , pm25Grade1h double
+    , regdate VARCHAR
+);
+
