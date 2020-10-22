@@ -5,10 +5,10 @@
 
 <mapper namespace="ym.batch.job.airkorea.repository.AirKoreaMapper">
 
-    <select id="selectAllJobInstance" resultType="java.util.HashMap">
+    <select id="selectStationName" resultType="String">
        select
-         *
-        from BATCH_JOB_INSTANCE
+         stationName
+        from tblStation
         limit 1
     </select>
 

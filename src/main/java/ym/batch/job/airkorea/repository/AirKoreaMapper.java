@@ -16,7 +16,7 @@ public class AirKoreaMapper {
         this.sqlSession = sqlSession;
     }
 
-    public HashMap<String, Object> selectAllJobInstance() throws Exception{
-        return sqlSession.selectOne(NAMESPACE+"selectAllJobInstance");
+    public String selectStationName() throws Exception{
+        return sqlSession.selectOne(NAMESPACE+"selectStationName");
     }
 }
