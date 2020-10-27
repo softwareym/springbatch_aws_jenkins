@@ -85,7 +85,7 @@ public class AirDataConfiguration {
     public JdbcBatchItemWriter<AirData> airDataCollectWriter(){
         return new JdbcBatchItemWriterBuilder<AirData>()
                 .dataSource(dataSource)
-                .sql("insert into tblAirData (dataTime, so2Value, coValue, o3Value, no2Value, pm10Value, pm10Value24, pm25Value, pm25Value24, khaiValue, khaiGrade, so2Grade, coGrade, o3Grade, no2Grade, pm10Grade, pm25Grade, pm10Grade1h, pm25Grade1h, regdate) VALUES (:dataTime, :so2Value, :coValue, :o3Value, :no2Value, :pm10Value, :pm10Value24, :pm25Value, :pm25Value24, :khaiValue, :khaiGrade, :so2Grade, :coGrade, :o3Grade, :no2Grade, :pm10Grade, :pm25Grade, :pm10Grade1h, :pm25Grade1h, :regdate)")
+                .sql("insert into tblAirData (stationName, dataTime, so2Value, coValue, o3Value, no2Value, pm10Value, pm10Value24, pm25Value, pm25Value24, khaiValue, khaiGrade, so2Grade, coGrade, o3Grade, no2Grade, pm10Grade, pm25Grade, pm10Grade1h, pm25Grade1h) VALUES (:stationName, :dataTime, :so2Value, :coValue, :o3Value, :no2Value, :pm10Value, :pm10Value24, :pm25Value, :pm25Value24, :khaiValue, :khaiGrade, :so2Grade, :coGrade, :o3Grade, :no2Grade, :pm10Grade, :pm25Grade, :pm10Grade1h, :pm25Grade1h)")
                 .beanMapped()
                 .build();
     }

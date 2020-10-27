@@ -12,6 +12,7 @@ import lombok.ToString;
 public class AirData {
 
     private String dataTime;      //'측정일'
+    private String stationName;    //측정소명
     private double so2Value;      //'아황산가스 농도(단위 : ppm)'
     private double coValue; 	  //'일산화탄소 농도(단위 : ppm)'
     private double o3Value; 	  //'오존 농도(단위 : ppm)'

@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class AirKoreaMapper {
 
     private final SqlSessionTemplate sqlSession;
-    private final static String NAMESPACE = "ym.batch.job.api.repository.AirKoreaMapper.";
+    private final static String NAMESPACE = "ym.batch.job.repository.AirKoreaMapper.";
 
     public AirKoreaMapper(@Qualifier("sqlSession") SqlSessionTemplate sqlSession) {
         this.sqlSession = sqlSession;

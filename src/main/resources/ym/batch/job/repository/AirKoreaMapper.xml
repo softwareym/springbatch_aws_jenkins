@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="ym.batch.job.airkorea.repository.AirKoreaMapper">
+<mapper namespace="ym.batch.job.repository.AirKoreaMapper">
 
     <select id="selectStationName" resultType="String">
        select

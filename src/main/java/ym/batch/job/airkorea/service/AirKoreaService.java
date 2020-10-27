@@ -67,10 +67,6 @@ public class AirKoreaService extends ApiCommonService {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(response);      //JSON데이터를 넣어 JSON Object 로 만들어 준다.
             JSONArray listInfoArray = (JSONArray) jsonObject.get("list");        //list 배열을 추출
 
-            long time = System.currentTimeMillis();
-            SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-            String regdate = dayTime.format(new Date(time));
-
             Station[] retArray = new Station[listInfoArray.size()];         //호출 결과를 우선 배열에 넣고, 리스트로 변환할 예정
             for (int i = 0; i < listInfoArray.size(); i++) {
                 JSONObject listObject = (JSONObject) listInfoArray.get(i);   //배열 안에 있는것도 JSON형식 이기 때문에 JSON Object 로 추출
@@ -96,7 +92,7 @@ public class AirKoreaService extends ApiCommonService {
                 if(!"".equals(listObject.get("dmY").toString())) {
                     retArray[i].setDmx(Double.parseDouble(listObject.get("dmY").toString()));
                 }
-                retArray[i].setRegdate(regdate);
+                //retArray[i].setRegdate(regdate);        //DB 입력시 등록하도록 함
             }
             collectData = Arrays.asList(retArray);//배열을 리스트로 변환
             //log.info("Rest Call result : >>>>>>>" + collectData);
@@ -109,13 +105,12 @@ public class AirKoreaService extends ApiCommonService {
     //대기오염정보 api 호출
     public List<AirData> callApiAirData(String url, String serviceKey) throws Exception {
 
-     //   String stationName = airKoreaMapper.selectStationName();      //todo : mysql 연동 후 test
+        String stationName = airKoreaMapper.selectStationName();
 
         HashMap<String, String> qParam = new HashMap<>();
-     //   qParam.put("stationName", stationName);   //db 조회-ex)종로구
-        qParam.put("stationName", "종로구");
+        qParam.put("stationName", stationName);   //db 조회-ex)종로구
         qParam.put("dataTerm", "DAILY");
-        qParam.put("numOfRows", "10");
+        qParam.put("numOfRows", "500");
         qParam.put("pageNo", "1");
         qParam.put("_returnType", "json");
 
@@ -123,13 +118,13 @@ public class AirKoreaService extends ApiCommonService {
         String response = getResponse(callUrl);        //요청한 응답데이터 get
 
         List<AirData> collectData = new ArrayList<>();
-        collectData = (List<AirData>) getAirDataParse(response);     //json data parsing
+        collectData = (List<AirData>) getAirDataParse(response, stationName);     //json data parsing
 
         return collectData;
     }
 
     //api 호출 응답 json 파싱
-    public List<AirData> getAirDataParse(String response){
+    public List<AirData> getAirDataParse(String response, String stationName){
         List<AirData> collectData = new ArrayList<>();
 
         try {
@@ -137,72 +132,33 @@ public class AirKoreaService extends ApiCommonService {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(response);      //JSON데이터를 넣어 JSON Object 로 만들어 준다.
             JSONArray listInfoArray = (JSONArray) jsonObject.get("list");        //list 배열을 추출
 
-            long time = System.currentTimeMillis();
-            SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-            String regdate = dayTime.format(new Date(time));
-
             AirData[] retArray = new AirData[listInfoArray.size()];         //호출 결과를 우선 배열에 넣고, 리스트로 변환할 예정
             for (int i = 0; i < listInfoArray.size(); i++) {
                 JSONObject listObject = (JSONObject) listInfoArray.get(i);   //배열 안에 있는것도 JSON형식 이기 때문에 JSON Object 로 추출
                 retArray[i] = new AirData();
 
                 //System.out.println(listObject.get("clearDate")); //JSON name으로 추출
-                retArray[i].setDataTime(listObject.get("dataTime").toString());
-                if(!"".equals(listObject.get("so2Value").toString())) {
-                    retArray[i].setSo2Value(Double.parseDouble(listObject.get("so2Value").toString()));
-                }
-                if(!"".equals(listObject.get("coValue").toString())) {
-                    retArray[i].setCoValue(Double.parseDouble(listObject.get("coValue").toString()));
-                }
-                if(!"".equals(listObject.get("o3Value").toString())) {
-                    retArray[i].setO3Value(Double.parseDouble(listObject.get("o3Value").toString()));
-                }
-                if(!"".equals(listObject.get("no2Value").toString())) {
-                    retArray[i].setNo2Value(Double.parseDouble(listObject.get("no2Value").toString()));
-                }
-                if(!"".equals(listObject.get("pm10Value").toString())) {
-                    retArray[i].setPm10Value(Double.parseDouble(listObject.get("pm10Value").toString()));
-                }
-                if(!"".equals(listObject.get("pm10Value24").toString())) {
-                    retArray[i].setPm10Value24(Double.parseDouble(listObject.get("pm10Value24").toString()));
-                }
-                if(!"".equals(listObject.get("pm25Value").toString())) {
-                    retArray[i].setPm25Value(Double.parseDouble(listObject.get("pm25Value").toString()));
-                }
-                if(!"".equals(listObject.get("pm25Value24").toString())) {
-                    retArray[i].setPm25Value24(Double.parseDouble(listObject.get("pm25Value24").toString()));
-                }
-                if(!"".equals(listObject.get("khaiValue").toString())) {
-                    retArray[i].setKhaiValue(Double.parseDouble(listObject.get("khaiValue").toString()));
-                }
-                if(!"".equals(listObject.get("khaiGrade").toString())) {
-                    retArray[i].setKhaiGrade(Double.parseDouble(listObject.get("khaiGrade").toString()));
-                }
-                if(!"".equals(listObject.get("so2Grade").toString())) {
-                    retArray[i].setSo2Grade(Double.parseDouble(listObject.get("so2Grade").toString()));
-                }
-                if(!"".equals(listObject.get("coGrade").toString())) {
-                    retArray[i].setCoGrade(Double.parseDouble(listObject.get("coGrade").toString()));
-                }
-                if(!"".equals(listObject.get("o3Grade").toString())) {
-                    retArray[i].setO3Grade(Double.parseDouble(listObject.get("o3Grade").toString()));
-                }
-                if(!"".equals(listObject.get("no2Grade").toString())) {
-                    retArray[i].setNo2Grade(Double.parseDouble(listObject.get("no2Grade").toString()));
-                }
-                if(!"".equals(listObject.get("pm10Grade").toString())) {
-                    retArray[i].setPm10Grade(Double.parseDouble(listObject.get("pm10Grade").toString()));
-                }
-                if(!"".equals(listObject.get("pm25Grade").toString())) {
-                    retArray[i].setPm25Grade(Double.parseDouble(listObject.get("pm25Grade").toString()));
-                }
-                if(!"".equals(listObject.get("pm10Grade1h").toString())) {
-                    retArray[i].setPm10Grade1h(Double.parseDouble(listObject.get("pm10Grade1h").toString()));
-                }
-                if(!"".equals(listObject.get("pm25Grade1h").toString())) {
-                    retArray[i].setPm25Grade1h(Double.parseDouble(listObject.get("pm25Grade1h").toString()));
-                }
-                retArray[i].setRegdate(regdate);
+                retArray[i].setStationName(stationName);
+                retArray[i].setDataTime(jsonNullChek(listObject.get("dataTime").toString(),"string" ));
+                retArray[i].setSo2Value(Double.parseDouble(jsonNullChek(listObject.get("so2Value").toString(),"number")));
+                retArray[i].setCoValue(Double.parseDouble(jsonNullChek(listObject.get("coValue").toString(),"number")));
+                retArray[i].setO3Value(Double.parseDouble(jsonNullChek(listObject.get("o3Value").toString(),"number")));
+                retArray[i].setNo2Value(Double.parseDouble(jsonNullChek(listObject.get("no2Value").toString(),"number")));
+                retArray[i].setPm10Value(Double.parseDouble(jsonNullChek(listObject.get("pm10Value").toString(),"number")));
+                retArray[i].setPm10Value24(Double.parseDouble(jsonNullChek(listObject.get("pm10Value24").toString(),"number")));
+                retArray[i].setPm25Value(Double.parseDouble(jsonNullChek(listObject.get("pm25Value").toString(),"number")));
+                retArray[i].setPm25Value24(Double.parseDouble(jsonNullChek(listObject.get("pm25Value24").toString(),"number")));
+                retArray[i].setKhaiValue(Double.parseDouble(jsonNullChek(listObject.get("khaiValue").toString(),"number")));
+                retArray[i].setKhaiGrade(Double.parseDouble(jsonNullChek(listObject.get("khaiGrade").toString(),"number")));
+                retArray[i].setSo2Grade(Double.parseDouble(jsonNullChek(listObject.get("so2Grade").toString(),"number")));
+                retArray[i].setCoGrade(Double.parseDouble(jsonNullChek(listObject.get("coGrade").toString(),"number")));
+                retArray[i].setO3Grade(Double.parseDouble(jsonNullChek(listObject.get("o3Grade").toString(),"number")));
+                retArray[i].setNo2Grade(Double.parseDouble(jsonNullChek(listObject.get("no2Grade").toString(),"number")));
+                retArray[i].setPm10Grade(Double.parseDouble(jsonNullChek(listObject.get("pm10Grade").toString(),"number")));
+                retArray[i].setPm25Grade(Double.parseDouble(jsonNullChek(listObject.get("pm25Grade").toString(),"number")));
+                retArray[i].setPm10Grade1h(Double.parseDouble(jsonNullChek(listObject.get("pm10Grade1h").toString(),"number")));
+                retArray[i].setPm25Grade1h(Double.parseDouble(jsonNullChek(listObject.get("pm25Grade1h").toString(),"number")));
+                //retArray[i].setRegdate(regdate); //DB 입력시 등록하도록 함
             }
             collectData = Arrays.asList(retArray);//배열을 리스트로 변환
             //log.info("Rest Call result : >>>>>>>" + collectData);

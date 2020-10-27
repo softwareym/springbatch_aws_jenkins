@@ -36,6 +36,7 @@ CREATE TABLE tblStation(
 DROP TABLE IF EXISTS tblAirData;
 CREATE TABLE tblAirData(
      seq LONG PRIMARY KEY AUTO_INCREMENT
+    , stationName VARCHAR
     , dataTime VARCHAR NOT NULL
     , so2Value double
     , coValue double

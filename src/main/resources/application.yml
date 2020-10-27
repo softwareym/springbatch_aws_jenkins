@@ -3,7 +3,7 @@
 ---
 spring:
   profiles:
-    active: local
+    active: real
 
 spring.batch.job.names: ${job.name:NONE}
 ---
@@ -21,9 +21,9 @@ spring:
   profiles: real
   datasource:
     hikari:
-      jdbc-url: jdbc:mysql://localhost:3306/batch_db
-      username: ym
-      password: 1234
+      jdbc-url: jdbc:mysql://localhost/localservice?useUnicode=true&characterEncoding=utf8
+      username:
+      password:
       driver-class-name: com.mysql.cj.jdbc.Driver
       logging:
         level: debug

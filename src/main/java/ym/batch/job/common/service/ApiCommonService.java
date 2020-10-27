@@ -55,4 +55,30 @@ public abstract class ApiCommonService implements ApiCommonInterface {
         String response = restTemplate.getForObject(uriComp.toUriString(), String.class);
         return response;
     }
+
+    @Override
+    public String jsonNullChek(String paramData, String type) {
+        String returnData = "";
+        if("number".equals(type)){
+            returnData = jsonNumberCheck(paramData);
+        }else{
+            if(paramData == null || paramData.trim().equals("")){
+                returnData = "데이터없음";
+            }else{
+                returnData = paramData;
+            }
+        }
+        return returnData;
+    }
+
+    @Override
+    public String jsonNumberCheck(String paramData) {
+        String returnData = "";
+        if("-".equals(paramData) || paramData == null || paramData.trim().equals("")){
+            returnData = "0";
+        }else{
+            returnData = paramData;
+        }
+        return returnData;
+    }
 }

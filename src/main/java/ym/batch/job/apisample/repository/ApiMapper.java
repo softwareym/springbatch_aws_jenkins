@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class ApiMapper {
 
     private final SqlSessionTemplate sqlSession;
-    private final static String NAMESPACE = "ym.batch.job.apisample.repository.ApiMapper.";
+    private final static String NAMESPACE = "ym.batch.job.repository.ApiMapper.";
 
     public ApiMapper(@Qualifier("sqlSession") SqlSessionTemplate sqlSession) {
         this.sqlSession = sqlSession;

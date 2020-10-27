@@ -85,7 +85,7 @@ public class MeasureStationConfiguration {
     public JdbcBatchItemWriter<Station> stationCollectWriter(){
         return new JdbcBatchItemWriterBuilder<Station>()
                 .dataSource(dataSource)
-                .sql("insert into tblStation (stationName, addr, year, operationAgency, stationPhoto, stationVrml, map, mangName, measureItem, dmx, dmy, regdate) VALUES (:stationName, :addr, :year, :operationAgency, :stationPhoto, :stationVrml, :map, :mangName, :measureItem, :dmx, :dmy, :regdate)")
+                .sql("insert into tblStation (stationName, addr, year, operationAgency, stationPhoto, stationVrml, map, mangName, measureItem, dmx, dmy) VALUES (:stationName, :addr, :year, :operationAgency, :stationPhoto, :stationVrml, :map, :mangName, :measureItem, :dmx, :dmy)")
                 .beanMapped()
                 .build();
     }
