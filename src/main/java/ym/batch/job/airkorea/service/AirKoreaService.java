@@ -102,30 +102,33 @@ public class AirKoreaService extends ApiCommonService {
         return collectData;
     }
 
+
     //대기오염정보 api 호출
+    List<AirData> collectAirData = new ArrayList<>();
+
     public List<AirData> callApiAirData(String url, String serviceKey) throws Exception {
 
-        String stationName = airKoreaMapper.selectStationName();
+        List<String> stationList = airKoreaMapper.selectStationName();
 
-        HashMap<String, String> qParam = new HashMap<>();
-        qParam.put("stationName", stationName);   //db 조회-ex)종로구
-        qParam.put("dataTerm", "DAILY");
-        qParam.put("numOfRows", "500");
-        qParam.put("pageNo", "1");
-        qParam.put("_returnType", "json");
+        for(int i=0; i<stationList.size(); i++){
+            HashMap<String, String> qParam = new HashMap<>();
+            qParam.put("stationName", stationList.get(i).toString());   //db 조회-ex)종로구
+            qParam.put("dataTerm", "DAILY");
+            qParam.put("numOfRows", "500");
+            qParam.put("pageNo", "1");
+            qParam.put("_returnType", "json");
 
-        UriComponentsBuilder callUrl = urlMake(url, serviceKey, qParam);          //요청 url&파라미터 생성
-        String response = getResponse(callUrl);        //요청한 응답데이터 get
+            UriComponentsBuilder callUrl = urlMake(url, serviceKey, qParam);          //요청 url&파라미터 생성
+            String response = getResponse(callUrl);        //요청한 응답데이터 get
+            collectAirData = (List<AirData>) getAirDataParse(response, stationList.get(i).toString());     //json data parsing
+        }
 
-        List<AirData> collectData = new ArrayList<>();
-        collectData = (List<AirData>) getAirDataParse(response, stationName);     //json data parsing
-
-        return collectData;
+        return collectAirData;
     }
 
     //api 호출 응답 json 파싱
     public List<AirData> getAirDataParse(String response, String stationName){
-        List<AirData> collectData = new ArrayList<>();
+        List<AirData> collectAirData = new ArrayList<>();
 
         try {
             JSONParser jsonParser = new JSONParser();
@@ -160,12 +163,12 @@ public class AirKoreaService extends ApiCommonService {
                 retArray[i].setPm25Grade1h(Double.parseDouble(jsonNullChek(listObject.get("pm25Grade1h").toString(),"number")));
                 //retArray[i].setRegdate(regdate); //DB 입력시 등록하도록 함
             }
-            collectData = Arrays.asList(retArray);//배열을 리스트로 변환
-            //log.info("Rest Call result : >>>>>>>" + collectData);
+            collectAirData = Arrays.asList(retArray);//배열을 리스트로 변환
+            //log.info("Rest Call result : >>>>>>>" + collectAirData);
         }catch(Exception e) {
             log.info("api not accessible(wrong request)");
         }
-        return collectData;
+        return collectAirData;
     }
 
 }

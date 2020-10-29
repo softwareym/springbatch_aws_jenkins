@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Repository
 public class AirKoreaMapper {
@@ -16,7 +17,7 @@ public class AirKoreaMapper {
         this.sqlSession = sqlSession;
     }
 
-    public String selectStationName() throws Exception{
-        return sqlSession.selectOne(NAMESPACE+"selectStationName");
+    public List<String> selectStationName() throws Exception{
+        return sqlSession.selectList(NAMESPACE+"selectStationName");
     }
 }
