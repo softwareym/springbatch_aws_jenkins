@@ -9,7 +9,7 @@
        select
          *
         from BATCH_JOB_INSTANCE
-        limit 1
+        limit 5
     </select>
 
 </mapper>

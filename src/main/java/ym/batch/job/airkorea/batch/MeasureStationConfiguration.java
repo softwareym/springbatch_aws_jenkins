@@ -15,6 +15,8 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import ym.batch.job.airkorea.item.Station;
 import ym.batch.job.airkorea.service.AirKoreaService;
 import javax.sql.DataSource;
@@ -32,7 +34,7 @@ public class MeasureStationConfiguration {
     private final DataSource dataSource;
     private final AirKoreaService airKoreaService;
 
-    private static final int CHUNKSIZE = 5;
+    private static final int CHUNKSIZE = 50000;
 
     @Value("${openapi.servicekey}")
     private String servicekey;
@@ -43,6 +45,24 @@ public class MeasureStationConfiguration {
     private List<Station> collectData = new ArrayList<>();
     private boolean checkRestCall = false;
     private int nextIndex = 0;
+
+    private int poolSize;
+
+    @Value("${poolSize:10}") // (1)
+    public void setPoolSize(int poolSize) {
+        this.poolSize = poolSize;
+    }
+
+    @Bean(name = "airkoreaStationJob_taskPool")
+    public TaskExecutor executor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor(); // (2)
+        executor.setCorePoolSize(poolSize);
+        executor.setMaxPoolSize(poolSize);
+        executor.setThreadNamePrefix("multi-thread-");
+        executor.setWaitForTasksToCompleteOnShutdown(Boolean.TRUE);
+        executor.initialize();
+        return executor;
+    }
 
     @Bean
     public Job airkoreaStationJob(){
@@ -57,6 +77,8 @@ public class MeasureStationConfiguration {
                 .<Station, Station>chunk(CHUNKSIZE)     //첫번째는 Reader에서 반환할 타입이고, 두번째는 Writer에 파라미터로 넘어올 타입
                 .reader(stationRestCollectReader())
                 .writer(stationCollectWriter())
+                .taskExecutor(executor()) // (2)
+                .throttleLimit(poolSize) // (3)
                 .build();
     }
 

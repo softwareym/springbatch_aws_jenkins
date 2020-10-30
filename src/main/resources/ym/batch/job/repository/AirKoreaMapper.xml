@@ -9,7 +9,15 @@
        select
          stationName
         from tblStation
-        limit 2
+        limit 1
     </select>
+
+    <update id="insertAirdata" parameterType="java.util.HashMap">
+		INSERT INTO tblAirData
+        (     stationName   , dataTime
+        )VALUES(
+            #{stationName} , #{dataTime}
+        )
+	</update>
 
 </mapper>

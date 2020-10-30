@@ -110,7 +110,9 @@ public class AirKoreaService extends ApiCommonService {
 
         for(int i=0; i<stationList.size(); i++){
             HashMap<String, String> qParam = new HashMap<>();
-            qParam.put("stationName", stationList.get(i).toString());   //db 조회-ex)종로구
+//            qParam.put("stationName", stationList.get(i).toString());   //db 조회-ex)종로구
+            qParam.put("stationName", "경화동");   //db 조회-ex)종로구
+
             qParam.put("dataTerm", "DAILY");
             qParam.put("numOfRows", "500");
             qParam.put("pageNo", "1");

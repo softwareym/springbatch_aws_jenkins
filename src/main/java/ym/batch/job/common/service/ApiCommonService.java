@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -51,18 +52,24 @@ public abstract class ApiCommonService implements ApiCommonInterface {
     @SneakyThrows
     @Override
     public String getResponse(UriComponentsBuilder uri) {
-        RestTemplate restTemplate = new RestTemplate();
+//        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        final HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        factory.setConnectTimeout(500000); // api 호출 타임아웃
+        factory.setReadTimeout(500000);   // api 읽기 타임아웃
+
+        RestTemplate restTemplate = new RestTemplate(factory);
 
         UriComponents uriComp = uri.build(false);
         String response = restTemplate.getForObject(uriComp.toUriString(), String.class);
 
-        if("<".equals(String.valueOf(response.charAt(0)))){             //인증키 일치하지 않을 경우 xml 리턴
+        if("<".equals(String.valueOf(response.charAt(0)))){             //정상적인 응답 아닐경우 xml 리턴함
             response = null;
         }
         return  Optional.ofNullable(response)
-                .orElseThrow(() -> new  org.json.simple.parser.ParseException(2));
+                .orElseThrow(() -> new org.json.simple.parser.ParseException(2));
     }
 
     @Override
