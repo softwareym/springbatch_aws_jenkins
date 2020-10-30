@@ -9,7 +9,7 @@
        select
          stationName
         from tblStation
-        limit 1
+        limit 2
     </select>
 
 </mapper>

@@ -17,7 +17,7 @@ public class AirKoreaMapper {
         this.sqlSession = sqlSession;
     }
 
-    public List<String> selectStationName() throws Exception{
+    public List<String> selectStationName() {
         return sqlSession.selectList(NAMESPACE+"selectStationName");
     }
 }

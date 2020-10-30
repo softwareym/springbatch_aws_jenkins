@@ -1,6 +1,8 @@
 package ym.batch.job.common.service;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
@@ -13,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.Optional;
 
 @AllArgsConstructor
 public abstract class ApiCommonService implements ApiCommonInterface {
@@ -44,6 +47,8 @@ public abstract class ApiCommonService implements ApiCommonInterface {
      * @param uri
      * @return
      */
+    //@SneakyThrows 어노테이션을 사용한 메소드에서 예외가 발생하면 catch문에서 e.printStackTrace(); 메소드를 호출한 것과 같이 예외가 출력된다
+    @SneakyThrows
     @Override
     public String getResponse(UriComponentsBuilder uri) {
         RestTemplate restTemplate = new RestTemplate();
@@ -51,9 +56,13 @@ public abstract class ApiCommonService implements ApiCommonInterface {
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         UriComponents uriComp = uri.build(false);
-
         String response = restTemplate.getForObject(uriComp.toUriString(), String.class);
-        return response;
+
+        if("<".equals(String.valueOf(response.charAt(0)))){             //인증키 일치하지 않을 경우 xml 리턴
+            response = null;
+        }
+        return  Optional.ofNullable(response)
+                .orElseThrow(() -> new  org.json.simple.parser.ParseException(2));
     }
 
     @Override
