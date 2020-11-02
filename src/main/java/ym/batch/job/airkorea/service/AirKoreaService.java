@@ -59,7 +59,7 @@ public class AirKoreaService extends ApiCommonService {
         return collectData;
     }
 
-    //api 호출 응답 json 파싱
+    //api 호출 응답 json 파싱.
     public List<Station> getStationDataParse(String response) throws ParseException {
         List<Station> collectData = new ArrayList<>();
 
