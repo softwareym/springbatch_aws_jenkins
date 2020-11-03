@@ -40,7 +40,7 @@ public class AirDataConfiguration {
     @Value("${openapi.airDataUrl}")
     private String airDataUrl;
 
-    private List<AirData> collectData = new ArrayList<>();
+    private List<AirData> collectAirData = new ArrayList<>();
     private boolean checkRestCall = false;
     private int nextIndex = 0;
 
@@ -68,12 +68,12 @@ public class AirDataConfiguration {
             public AirData read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException, IllegalArgumentException {
 
                 if (checkRestCall == false) {   //호출되었는지 체크
-                    collectData = airKoreaService.callApiAirData(airDataUrl, servicekey);
+                    collectAirData = airKoreaService.callApiAirData(airDataUrl, servicekey);
                     checkRestCall = true; //다음 read() 부터는 재호출 방지하기 위해 true로 변경
                 }
                 AirData nextCollect = null; //ItemReader는 반복문으로 동작한다. 하나씩 Writer로 전달해야 한다.
-                if (nextIndex < collectData.size()) {//전체 리스트에서 0부터 하나씩 추출해서, 하나씩 Writer로 전달
-                    nextCollect = collectData.get(nextIndex);
+                if (nextIndex < collectAirData.size()) {//전체 리스트에서 0부터 하나씩 추출해서, 하나씩 Writer로 전달
+                    nextCollect = collectAirData.get(nextIndex);
                     nextIndex++;
                 }
                 return nextCollect;

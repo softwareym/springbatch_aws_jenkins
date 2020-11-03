@@ -34,7 +34,7 @@ public class MeasureStationConfiguration {
     private final DataSource dataSource;
     private final AirKoreaService airKoreaService;
 
-    private static final int CHUNKSIZE = 50000;
+    private static final int CHUNKSIZE = 5;
 
     @Value("${openapi.servicekey}")
     private String servicekey;
@@ -46,6 +46,7 @@ public class MeasureStationConfiguration {
     private boolean checkRestCall = false;
     private int nextIndex = 0;
 
+    /*
     private int poolSize;
 
     @Value("${poolSize:10}") // (1)
@@ -63,7 +64,7 @@ public class MeasureStationConfiguration {
         executor.initialize();
         return executor;
     }
-
+*/
     @Bean
     public Job airkoreaStationJob(){
         return jobBuilderFactory.get("airkoreaStationJob")
@@ -71,15 +72,23 @@ public class MeasureStationConfiguration {
                 .build();
     }
 
+
     @Bean
     public Step stationStep(){
         return stepBuilderFactory.get("stationStep")
                 .<Station, Station>chunk(CHUNKSIZE)     //첫번째는 Reader에서 반환할 타입이고, 두번째는 Writer에 파라미터로 넘어올 타입
                 .reader(stationRestCollectReader())
                 .writer(stationCollectWriter())
+                .build();
+        /*
+          return stepBuilderFactory.get("stationStep")
+                .<Station, Station>chunk(CHUNKSIZE)     //첫번째는 Reader에서 반환할 타입이고, 두번째는 Writer에 파라미터로 넘어올 타입
+                .reader(stationRestCollectReader())
+                .writer(stationCollectWriter())
                 .taskExecutor(executor()) // (2)
                 .throttleLimit(poolSize) // (3)
                 .build();
+         */
     }
 
     //Rest API로 데이터를 가져온다.

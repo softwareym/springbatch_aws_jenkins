@@ -41,7 +41,6 @@ public class AirKoreaService extends ApiCommonService {
         return super.getResponse(uri);
     }
 
-
     //측정소 목록정보 api 호출
     public List<Station> callApiStationData(String url, String serviceKey) throws UnsupportedEncodingException, ParseException {
 
@@ -100,19 +99,20 @@ public class AirKoreaService extends ApiCommonService {
         return collectData;
     }
 
+    //측정소 목록정보 조회
+    public List<String> selectStationName(){
+        return airKoreaMapper.selectStationName();
+    }
 
     //대기오염정보 api 호출
     List<AirData> collectAirData = new ArrayList<>();
 
-    public List<AirData> callApiAirData(String url, String serviceKey) throws UnsupportedEncodingException, ParseException, java.text.ParseException {
-
+    public List<AirData> callApiAirData(String url, String serviceKey) throws UnsupportedEncodingException, ParseException, java.text.ParseException, InterruptedException {
         List<String> stationList = airKoreaMapper.selectStationName();
 
         for(int i=0; i<stationList.size(); i++){
             HashMap<String, String> qParam = new HashMap<>();
-//            qParam.put("stationName", stationList.get(i).toString());   //db 조회-ex)종로구
-            qParam.put("stationName", "경화동");   //db 조회-ex)종로구
-
+            qParam.put("stationName", stationList.get(i).toString());   //db 조회-ex)종로구
             qParam.put("dataTerm", "DAILY");
             qParam.put("numOfRows", "500");
             qParam.put("pageNo", "1");
@@ -120,9 +120,9 @@ public class AirKoreaService extends ApiCommonService {
 
             UriComponentsBuilder callUrl = urlMake(url, serviceKey, qParam);          //요청 url&파라미터 생성
             String response = getResponse(callUrl);        //요청한 응답데이터 get
-            collectAirData = (List<AirData>) getAirDataParse(response, stationList.get(i).toString());     //json data parsing
+//            Thread.sleep(2000); //1000 : 1초
+            collectAirData =  getAirDataParse(response, stationList.get(i).toString());     //json data parsing
         }
-
         return collectAirData;
     }
 
@@ -145,7 +145,6 @@ public class AirKoreaService extends ApiCommonService {
 
             //System.out.println(listObject.get("clearDate")); //JSON name으로 추출
             retArray[i].setStationName(stationName);
-//                retArray[i].setDataTime(jsonNullChek(listObject.get("dataTime").toString(),"string" ));
             retArray[i].setSo2Value(Double.parseDouble(jsonNullChek(listObject.get("so2Value").toString(),"number")));
             retArray[i].setCoValue(Double.parseDouble(jsonNullChek(listObject.get("coValue").toString(),"number")));
             retArray[i].setO3Value(Double.parseDouble(jsonNullChek(listObject.get("o3Value").toString(),"number")));
@@ -165,8 +164,10 @@ public class AirKoreaService extends ApiCommonService {
             retArray[i].setPm10Grade1h(Double.parseDouble(jsonNullChek(listObject.get("pm10Grade1h").toString(),"number")));
             retArray[i].setPm25Grade1h(Double.parseDouble(jsonNullChek(listObject.get("pm25Grade1h").toString(),"number")));
             //retArray[i].setRegdate(regdate); //DB 입력시 등록하도록 함
+            collectAirData.add(retArray[i]);
         }
-        collectAirData = Arrays.asList(retArray);//배열을 리스트로 변환
+
+        //collectAirData = Arrays.asList(retArray);//배열을 리스트로 변환
         //log.info("Rest Call result : >>>>>>>" + collectAirData);
 
         return collectAirData;
