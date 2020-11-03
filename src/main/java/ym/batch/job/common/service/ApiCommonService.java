@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
@@ -11,6 +12,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import ym.batch.job.common.error.ErrorMessage;
+import ym.batch.job.common.exception.ApiException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -65,13 +68,17 @@ public abstract class ApiCommonService implements ApiCommonInterface {
 
         UriComponents uriComp = uri.build(false);
         String response = restTemplate.getForObject(uriComp.toUriString(), String.class);
-        Thread.sleep(2000); //1000 : 1초
+        Thread.sleep(3000); //1000 : 1초
 
-        if("<".equals(String.valueOf(response.charAt(0)))){             //정상적인 응답 아닐경우 xml 리턴함
+        if("<".equals(String.valueOf(response.charAt(0)))){             //정상적인 응답 아닐경우 xml 리턴[트래픽초과,서비스키 미등록..]
             response = null;
+
+            throw new ApiException(
+                    String.format(ErrorMessage.INVALID_WRONG_RESPONSE.getErrorMessage())
+                    , HttpStatus.BAD_REQUEST);
         }
-        return  Optional.ofNullable(response)
-                .orElseThrow(() -> new org.json.simple.parser.ParseException(2));
+
+        return response;
     }
 
     @Override
