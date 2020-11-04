@@ -70,14 +70,23 @@ public abstract class ApiCommonService implements ApiCommonInterface {
         String response = restTemplate.getForObject(uriComp.toUriString(), String.class);
         Thread.sleep(3000); //1000 : 1초
 
-        if("<".equals(String.valueOf(response.charAt(0)))){             //정상적인 응답 아닐경우 xml 리턴[트래픽초과,서비스키 미등록..]
+        if("<".equals(String.valueOf(response.charAt(0)))){             //정상적인 응답 아닐경우 xml 리턴
             response = null;
 
-            throw new ApiException(
-                    String.format(ErrorMessage.INVALID_WRONG_RESPONSE.getErrorMessage())
-                    , HttpStatus.BAD_REQUEST);
+            if(response.contains("SERVICE KEY IS NOT REGISTERED ERROR")){
+                throw new ApiException(
+                        String.format(ErrorMessage.INVALID_WRONG_SERVICEKEY.getErrorMessage())
+                        , HttpStatus.BAD_REQUEST);
+            }else if(response.contains("LIMITED")){
+                throw new ApiException(
+                        String.format(ErrorMessage.INVALID_WRONG_RESPONSE.getErrorMessage())
+                        , HttpStatus.BAD_REQUEST);
+            }else{
+                throw new ApiException(
+                        String.format(ErrorMessage.INVALID_WRONG_ETC.getErrorMessage())
+                        , HttpStatus.BAD_REQUEST);
+            }
         }
-
         return response;
     }
 

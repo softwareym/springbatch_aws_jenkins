@@ -34,7 +34,7 @@ public class AirDataConfiguration {
     private final DataSource dataSource;
     private final AirKoreaService airKoreaService;
 
-    private static final int CHUNKSIZE = 5;
+    private static final int CHUNKSIZE = 25;
 
     @Value("${openapi.servicekey}")
     private String servicekey;
