@@ -30,18 +30,6 @@ public class ApiService extends ApiCommonService {
     @Autowired
     ApiMapper apiMapper;
 
-    /*
-    @Override
-    public UriComponentsBuilder urlMake(String url, String serviceKey, Map<String, String> qParam) throws UnsupportedEncodingException {
-        return super.urlMake(url, serviceKey, qParam);
-    }
-
-    @Override
-    public String getResponse(UriComponentsBuilder uri) {
-        return super.getResponse(uri);
-    }
-    */
-
     //미세먼지 api 호출
     public List<MicroDust> callApiMicroDustData(String url, String serviceKey) throws UnsupportedEncodingException, ParseException {
 
