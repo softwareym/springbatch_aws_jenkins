@@ -55,20 +55,14 @@ public abstract class ApiCommonService implements ApiCommonInterface {
     @SneakyThrows
     @Override
     public String getResponse(UriComponentsBuilder uri) {
-//        RestTemplate restTemplate = new RestTemplate();
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-//        final HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-//        factory.setConnectTimeout(500000); // api 호출 타임아웃
-//        factory.setReadTimeout(500000);   // api 읽기 타임아웃
-
-//        RestTemplate restTemplate = new RestTemplate(factory);
         RestTemplate restTemplate = new RestTemplate();
 
         UriComponents uriComp = uri.build(false);
         String response = restTemplate.getForObject(uriComp.toUriString(), String.class);
-        Thread.sleep(3000); //1000 : 1초
+        Thread.sleep(4000); //1000 : 1초
 
         if("<".equals(String.valueOf(response.charAt(0)))){             //정상적인 응답 아닐경우 xml 리턴
             response = null;

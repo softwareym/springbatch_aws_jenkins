@@ -42,7 +42,7 @@ public class AirDataConfiguration {
     @Value("${openapi.airDataUrl}")
     private String airDataUrl;
 
-    private List<AirData> collectAirData = new ArrayList<>();
+    protected List<AirData> collectAirData = new ArrayList<>();
     private boolean checkRestCall = false;
     private int nextIndex = 0;
 
@@ -73,20 +73,23 @@ public class AirDataConfiguration {
 
     @Bean
     public Step airDataStep(){
-        /*
+
+        //싱글 쓰레드
         return stepBuilderFactory.get("airDataStep")
                 .<AirData, AirData>chunk(CHUNKSIZE)     //첫번째는 Reader에서 반환할 타입이고, 두번째는 Writer에 파라미터로 넘어올 타입
                 .reader(airDataRestCollectReader())
                 .writer(airDataCollectWriter())
                 .build();
-        */
+        /*
         return stepBuilderFactory.get("airDataStep")
-                .<AirData, AirData>chunk(CHUNKSIZE)     //첫번째는 Reader에서 반환할 타입이고, 두번째는 Writer에 파라미터로 넘어올 타입
+                .<AirData, AirData>chunk(CHUNKSIZE)
                 .reader(airDataRestCollectReader())
                 .writer(airDataCollectWriter())
                 .taskExecutor(executor()) // (2)
                 .throttleLimit(poolSize) // (3)
                 .build();
+        */
+
     }
 
     //Rest API로 데이터를 가져온다.

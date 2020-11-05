@@ -10,7 +10,6 @@
          stationName
         from tblStation
         order by seq asc
-        limit 1
     </select>
 
     <update id="insertAirdata" parameterType="java.util.HashMap">

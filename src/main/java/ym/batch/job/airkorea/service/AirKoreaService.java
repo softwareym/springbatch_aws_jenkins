@@ -31,16 +31,6 @@ public class AirKoreaService extends ApiCommonService {
     @Autowired
     AirKoreaMapper airKoreaMapper;
 
-    @Override
-    public UriComponentsBuilder urlMake(String url, String serviceKey, Map<String, String> qParam) throws UnsupportedEncodingException {
-        return super.urlMake(url, serviceKey, qParam);
-    }
-
-    @Override
-    public String getResponse(UriComponentsBuilder uri) {
-        return super.getResponse(uri);
-    }
-
     //측정소 목록정보 api 호출
     public List<Station> callApiStationData(String url, String serviceKey) throws UnsupportedEncodingException, ParseException {
 
@@ -105,9 +95,10 @@ public class AirKoreaService extends ApiCommonService {
     }
 
     //대기오염정보 api 호출
-    List<AirData> collectAirData = new ArrayList<>();
+    private List<AirData> parseAirData = new ArrayList<>();
 
     public List<AirData> callApiAirData(String url, String serviceKey) throws UnsupportedEncodingException, ParseException, java.text.ParseException, InterruptedException {
+
         List<String> stationList = airKoreaMapper.selectStationName();
 
         for(int i=0; i<stationList.size(); i++){
@@ -120,20 +111,23 @@ public class AirKoreaService extends ApiCommonService {
 
             UriComponentsBuilder callUrl = urlMake(url, serviceKey, qParam);          //요청 url&파라미터 생성
             String response = getResponse(callUrl);        //요청한 응답데이터 get
-//            Thread.sleep(2000); //1000 : 1초
-            collectAirData =  getAirDataParse(response, stationList.get(i).toString());     //json data parsing
+      //            Thread.sleep(2000); //1000 : 1초//            parseAirData =  getAirDataParse(response, stationList.get(i).toString());     //json data parsing
+            getAirDataParse(response, stationList.get(i).toString());     //json data parsing
+            System.out.println("[실제 값있어야 함 25개] -3 : " +parseAirData.size());
         }
-        return collectAirData;
+        return parseAirData;
     }
 
-    //api 호출 응답 json 파싱
-    public List<AirData> getAirDataParse(String response, String stationName) throws ParseException, java.text.ParseException {
+    //api 호출 응답 json 파싱, 리스트에 추가
+    public void getAirDataParse(String response, String stationName) throws ParseException, java.text.ParseException {
 
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(response);      //JSON데이터를 넣어 JSON Object 로 만들어 준다.
         JSONArray listInfoArray = (JSONArray) jsonObject.get("list");        //list 배열을 추출
 
-        AirData[] retArray = new AirData[listInfoArray.size()];         //호출 결과를 우선 배열에 넣고, 리스트로 변환할 예정
+        AirData[] retArray = new AirData[listInfoArray.size()];         //호출 결과를 우선 배열에 넣고, 리스트로 변환할 예정+++
+
+
         for (int i = 0; i < listInfoArray.size(); i++) {
             JSONObject listObject = (JSONObject) listInfoArray.get(i);   //배열 안에 있는것도 JSON형식 이기 때문에 JSON Object 로 추출
             retArray[i] = new AirData();
@@ -164,13 +158,12 @@ public class AirKoreaService extends ApiCommonService {
             retArray[i].setPm10Grade1h(Double.parseDouble(jsonNullChek(listObject.get("pm10Grade1h").toString(),"number")));
             retArray[i].setPm25Grade1h(Double.parseDouble(jsonNullChek(listObject.get("pm25Grade1h").toString(),"number")));
             //retArray[i].setRegdate(regdate); //DB 입력시 등록하도록 함
-            collectAirData.add(retArray[i]);
+            parseAirData.add(retArray[i]);
         }
 
         //collectAirData = Arrays.asList(retArray);//배열을 리스트로 변환
-        //log.info("Rest Call result : >>>>>>>" + collectAirData);
-
-        return collectAirData;
+        log.info("Rest Call result : >>>>>>>" + parseAirData.size());
+      //  return parseAirData;
     }
 
 }
