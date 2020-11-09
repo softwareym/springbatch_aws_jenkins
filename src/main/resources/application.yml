@@ -1,6 +1,10 @@
 --린트 문법 체크 사이트 http://www.yamllint.com/
 --DB 연결 https://jojoldu.tistory.com/325
 ---
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
 spring:
   profiles:
     active: real

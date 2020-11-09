@@ -25,12 +25,13 @@ public class PropertyEncyptConfiguration {
     @Bean("encryptorBean")
     public PooledPBEStringEncryptor stringEncryptor() {
 
-        //vm option에서 -Djasypt.encrypor.servicekey=평문자열(암호화x)로 설정하여 실행
-        String servicekey = System.getProperty("jasypt.encryptor.servicekey");
+        //vm option에서 -Djasypt.encrypor.password=평문자열(암호화x)로 설정하여 실행
+        String password = System.getProperty("jasypt.encryptor.password");
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         encryptor.setProvider(new BouncyCastleProvider());
         encryptor.setPoolSize(2);
-        encryptor.setPassword(servicekey);
+
+        encryptor.setPassword(password);
         encryptor.setAlgorithm("PBEWithSHA256And128BitAES-CBC-BC");
 
         return encryptor;
