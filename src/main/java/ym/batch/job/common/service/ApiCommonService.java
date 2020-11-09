@@ -62,7 +62,7 @@ public abstract class ApiCommonService implements ApiCommonInterface {
 
         UriComponents uriComp = uri.build(false);
         String response = restTemplate.getForObject(uriComp.toUriString(), String.class);
-        Thread.sleep(4000); //1000 : 1초
+        Thread.sleep(5000); //1000 : 1초
 
         if("<".equals(String.valueOf(response.charAt(0)))){             //정상적인 응답 아닐경우 xml 리턴
             response = null;

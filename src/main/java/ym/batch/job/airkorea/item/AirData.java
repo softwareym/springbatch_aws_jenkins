@@ -5,7 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @NoArgsConstructor
 @ToString
@@ -13,7 +14,7 @@ import java.util.Date;
 @Setter
 public class AirData {
 
-    private Date dataTime;      //'측정일'
+    private LocalDateTime dataTime;      //'측정일'                  //https://jeong-pro.tistory.com/163
     private String stationName;    //측정소명
     private double so2Value;      //'아황산가스 농도(단위 : ppm)'
     private double coValue; 	  //'일산화탄소 농도(단위 : ppm)'

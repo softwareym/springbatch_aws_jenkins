@@ -1,6 +1,7 @@
 package ym.batch.job.airkorea.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.Local;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,6 +17,8 @@ import ym.batch.job.common.service.ApiCommonService;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -113,7 +116,7 @@ public class AirKoreaService extends ApiCommonService {
             String response = getResponse(callUrl);        //요청한 응답데이터 get
       //            Thread.sleep(2000); //1000 : 1초//            parseAirData =  getAirDataParse(response, stationList.get(i).toString());     //json data parsing
             getAirDataParse(response, stationList.get(i).toString());     //json data parsing
-            System.out.println("[실제 값있어야 함 25개] -3 : " +parseAirData.size());
+      //      System.out.println("[***]  : " +parseAirData.size());
         }
         return parseAirData;
     }
@@ -133,8 +136,8 @@ public class AirKoreaService extends ApiCommonService {
             retArray[i] = new AirData();
 
             String dt = jsonNullChek(listObject.get("dataTime").toString(),"string" );
-            SimpleDateFormat transFormatDataTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            Date datatime = transFormatDataTime.parse(dt);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime datatime = LocalDateTime.parse(dt, formatter);
             retArray[i].setDataTime(datatime);
 
             //System.out.println(listObject.get("clearDate")); //JSON name으로 추출
