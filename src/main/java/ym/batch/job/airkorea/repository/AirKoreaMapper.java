@@ -22,6 +22,14 @@ public class AirKoreaMapper {
         return sqlSession.selectList(NAMESPACE+"selectStationName");
     }
 
+    public List<String> selectStationNamesForCall() {
+        return sqlSession.selectList(NAMESPACE+"selectStationNamesForCall");
+    }
+
+    public void insertAirdata(String stationName){
+        sqlSession.insert(NAMESPACE+"insertAirdataCallRegist", stationName);
+    }
+
     public void insertAirdata(HashMap<String, Object> param){
         sqlSession.insert(NAMESPACE+"insertAirdata", param);
     }

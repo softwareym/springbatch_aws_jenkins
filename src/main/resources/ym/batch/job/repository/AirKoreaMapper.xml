@@ -12,6 +12,17 @@
         order by seq asc
     </select>
 
+    <select id="selectStationNamesForCall" resultType="String">
+       select
+        param
+       from api_call_manage
+       where 1=1
+       and call_div = 'AD'
+       and treate_stts = 'WT'
+       and work_date = date_format(now(), '%Y-%m-%d')
+       limt 100
+    </select>
+
     <update id="insertAirdata" parameterType="java.util.HashMap">
 		INSERT INTO tblAirData
         (     stationName   , dataTime
@@ -19,5 +30,13 @@
             #{stationName} , #{dataTime}
         )
 	</update>
+
+    <insert id="insertAirdataCallRegist" parameterType="String">
+		INSERT INTO api_call_manage
+        (call_div,treate_stts,param,create_dt,work_date)
+        VALUES(
+        'AD' , 'WT', #{stationName}, now() , now()
+        )
+	</insert>
 
 </mapper>
