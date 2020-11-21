@@ -42,7 +42,7 @@
 
     <update id="updateTreeteStts" parameterType="java.util.List">
 		UPDATE api_call_manage
-        SET treate_stts = 'DN' , updated_dt = now()
+        SET treate_stts = 'DN' , update_dt = now()
         WHERE api_call_manage_seq in
         <foreach collection="list" item="srl" index="index" separator="," open="(" close=")">
         #{srl}
