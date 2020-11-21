@@ -3,7 +3,8 @@ package ym.batch.job.airkorea.repository;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import ym.batch.job.airkorea.item.AirData;
+import ym.batch.job.airkorea.item.ApiCallManageDto;
+import ym.batch.job.airkorea.item.ApiCallManageVo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +23,8 @@ public class AirKoreaMapper {
         return sqlSession.selectList(NAMESPACE+"selectStationName");
     }
 
-    public List<String> selectStationNamesForCall() {
-        return sqlSession.selectList(NAMESPACE+"selectStationNamesForCall");
+    public List<ApiCallManageDto> selectStationNamesForCall(ApiCallManageVo apiCallManageVo) {
+        return sqlSession.selectList(NAMESPACE+"selectStationNamesForCall",apiCallManageVo);
     }
 
     public void insertAirdata(String stationName){
@@ -33,4 +34,9 @@ public class AirKoreaMapper {
     public void insertAirdata(HashMap<String, Object> param){
         sqlSession.insert(NAMESPACE+"insertAirdata", param);
     }
+
+    public void updateTreeteStts(List<Long> apiCallManageSrls){
+        sqlSession.insert(NAMESPACE+"updateTreeteStts", apiCallManageSrls);
+    }
+
 }

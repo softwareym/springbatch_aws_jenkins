@@ -12,15 +12,16 @@
         order by seq asc
     </select>
 
-    <select id="selectStationNamesForCall" resultType="String">
+    <select id="selectStationNamesForCall" parameterType="ym.batch.job.airkorea.item.ApiCallManageVo" resultType="ym.batch.job.airkorea.item.ApiCallManageDto">
        select
-        param
+        api_call_manage_seq AS apiCallManageSeq
+        ,param
        from api_call_manage
        where 1=1
-       and call_div = 'AD'
-       and treate_stts = 'WT'
-       and work_date = date_format(now(), '%Y-%m-%d')
-       limt 100
+       and call_div = #{callDiv}
+       and treate_stts = #{treateStts}
+       and work_date = #{workDate}
+       limit 0 , 100
     </select>
 
     <update id="insertAirdata" parameterType="java.util.HashMap">
@@ -31,12 +32,21 @@
         )
 	</update>
 
-    <insert id="insertAirdataCallRegist" parameterType="String">
+    <insert id="insertAirdataCallRegist" parameterType="ym.batch.job.airkorea.item.ApiCallManageVo">
 		INSERT INTO api_call_manage
         (call_div,treate_stts,param,create_dt,work_date)
         VALUES(
-        'AD' , 'WT', #{stationName}, now() , now()
+        #{callDiv} , #{treateStts}, #{param}, now() , now()
         )
 	</insert>
+
+    <update id="updateTreeteStts" parameterType="java.util.List">
+		UPDATE api_call_manage
+        SET treate_stts = 'DN'
+        WHERE api_call_manage_seq in
+        <foreach collection="list" item="srl" index="index" separator="," open="(" close=")">
+        #{srl}
+        </foreach>
+	</update>
 
 </mapper>

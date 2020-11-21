@@ -35,7 +35,7 @@ public class AirDataCallRegistTask implements Tasklet, StepExecutionListener {
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
-        logger.info("beforeStep");
+        logger.info("AirDataCallRegistTask beforeStep");
     }
 
     @Override
@@ -44,13 +44,13 @@ public class AirDataCallRegistTask implements Tasklet, StepExecutionListener {
         for(String stationName : stationNames){
             airKoreaMapper.insertAirdata(stationName);
         }
-        logger.info("execute");
+        logger.info("AirDataCallRegistTask execute");
         return RepeatStatus.FINISHED;
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
-        logger.info("afterStep");
+        logger.info("AirDataCallRegistTask afterStep");
         return ExitStatus.COMPLETED;
     }
 }
