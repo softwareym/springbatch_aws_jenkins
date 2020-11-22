@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
@@ -11,6 +12,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import ym.batch.job.common.error.ErrorMessage;
+import ym.batch.job.common.exception.ApiException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -52,26 +55,33 @@ public abstract class ApiCommonService implements ApiCommonInterface {
     @SneakyThrows
     @Override
     public String getResponse(UriComponentsBuilder uri) {
-//        RestTemplate restTemplate = new RestTemplate();
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-//        final HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-//        factory.setConnectTimeout(500000); // api 호출 타임아웃
-//        factory.setReadTimeout(500000);   // api 읽기 타임아웃
-
-//        RestTemplate restTemplate = new RestTemplate(factory);
         RestTemplate restTemplate = new RestTemplate();
 
         UriComponents uriComp = uri.build(false);
         String response = restTemplate.getForObject(uriComp.toUriString(), String.class);
-        Thread.sleep(2000); //1000 : 1초
+        Thread.sleep(5000); //1000 : 1초
 
-        if("<".equals(String.valueOf(response.charAt(0)))){             //정상적인 응답 아닐경우 xml 리턴함
+        if("<".equals(String.valueOf(response.charAt(0)))){             //정상적인 응답 아닐경우 xml 리턴
             response = null;
+
+            if(response.contains("SERVICE KEY IS NOT REGISTERED ERROR")){
+                throw new ApiException(
+                        String.format(ErrorMessage.INVALID_WRONG_SERVICEKEY.getErrorMessage())
+                        , HttpStatus.BAD_REQUEST);
+            }else if(response.contains("LIMITED")){
+                throw new ApiException(
+                        String.format(ErrorMessage.INVALID_WRONG_RESPONSE.getErrorMessage())
+                        , HttpStatus.BAD_REQUEST);
+            }else{
+                throw new ApiException(
+                        String.format(ErrorMessage.INVALID_WRONG_ETC.getErrorMessage())
+                        , HttpStatus.BAD_REQUEST);
+            }
         }
-        return  Optional.ofNullable(response)
-                .orElseThrow(() -> new org.json.simple.parser.ParseException(2));
+        return response;
     }
 
     @Override
