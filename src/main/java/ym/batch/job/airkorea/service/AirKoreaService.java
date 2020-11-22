@@ -11,15 +11,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 import ym.batch.job.airkorea.item.AirData;
+import ym.batch.job.airkorea.item.ApiCallManageDto;
+import ym.batch.job.airkorea.item.ApiCallManageVo;
 import ym.batch.job.airkorea.item.Station;
 import ym.batch.job.airkorea.repository.AirKoreaMapper;
+import ym.batch.job.common.constant.DateFormat;
 import ym.batch.job.common.service.ApiCommonService;
+import ym.batch.job.common.status.CallDiv;
+import ym.batch.job.common.status.TreateStts;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional
@@ -101,12 +108,16 @@ public class AirKoreaService extends ApiCommonService {
     private List<AirData> parseAirData = new ArrayList<>();
 
     public List<AirData> callApiAirData(String url, String serviceKey) throws UnsupportedEncodingException, ParseException, java.text.ParseException, InterruptedException {
+        ApiCallManageVo apiCallManageVo = new ApiCallManageVo();
+        apiCallManageVo.setCallDiv(CallDiv.AIRDATA.getStatusCode());
+        apiCallManageVo.setTreateStts(TreateStts.WAIT.getTreateSttsCode());
+        apiCallManageVo.setWorkDate(LocalDate.now());
 
-        List<String> stationList = airKoreaMapper.selectStationName();
+        List<ApiCallManageDto> stationList = airKoreaMapper.selectStationNamesForCall(apiCallManageVo);
 
         for(int i=0; i<stationList.size(); i++){
             HashMap<String, String> qParam = new HashMap<>();
-            qParam.put("stationName", stationList.get(i).toString());   //db 조회-ex)종로구
+            qParam.put("stationName", stationList.get(i).getParam());   //db 조회-ex)종로구
             qParam.put("dataTerm", "DAILY");
             qParam.put("numOfRows", "500");
             qParam.put("pageNo", "1");
@@ -118,6 +129,12 @@ public class AirKoreaService extends ApiCommonService {
             getAirDataParse(response, stationList.get(i).toString());     //json data parsing
       //      System.out.println("[***]  : " +parseAirData.size());
         }
+
+        List<Long> apiCallManageSrls = stationList.stream()
+                                                    .map(station -> station.getApiCallManageSeq())
+                                                    .collect(Collectors.toList());
+        // 정상적으로 호출된 api_call은 상태값을 WT => DN 처리
+        airKoreaMapper.updateTreeteStts(apiCallManageSrls);
         return parseAirData;
     }
 

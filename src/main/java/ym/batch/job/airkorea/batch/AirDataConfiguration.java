@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.client.ResourceAccessException;
 import ym.batch.job.airkorea.item.AirData;
 import ym.batch.job.airkorea.service.AirKoreaService;
 
@@ -77,6 +78,8 @@ public class AirDataConfiguration {
         //싱글 쓰레드
         return stepBuilderFactory.get("airDataStep")
                 .<AirData, AirData>chunk(CHUNKSIZE)     //첫번째는 Reader에서 반환할 타입이고, 두번째는 Writer에 파라미터로 넘어올 타입
+                    .faultTolerant()
+                    .retryLimit(3).retry(ResourceAccessException.class) // ResourceAccessException.class 오류를 허용하여 retry 메카니즘 정책(3번 시도) 추가
                 .reader(airDataRestCollectReader())
                 .writer(airDataCollectWriter())
                 .build();
