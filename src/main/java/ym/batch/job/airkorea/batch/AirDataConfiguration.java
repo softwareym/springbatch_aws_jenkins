@@ -22,6 +22,7 @@ import ym.batch.job.airkorea.item.AirData;
 import ym.batch.job.airkorea.service.AirKoreaService;
 
 import javax.sql.DataSource;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +80,9 @@ public class AirDataConfiguration {
         return stepBuilderFactory.get("airDataStep")
                 .<AirData, AirData>chunk(CHUNKSIZE)     //첫번째는 Reader에서 반환할 타입이고, 두번째는 Writer에 파라미터로 넘어올 타입
                     .faultTolerant()
-                    .retryLimit(3).retry(ResourceAccessException.class) // ResourceAccessException.class 오류를 허용하여 retry 메카니즘 정책(3번 시도) 추가
+                    .retryLimit(3)
+                    .retry(ConnectException.class)
+                    .retry(ResourceAccessException.class) // ResourceAccessException.class 오류를 허용하여 retry 메카니즘 정책(3번 시도) 추가
                 .reader(airDataRestCollectReader())
                 .writer(airDataCollectWriter())
                 .build();

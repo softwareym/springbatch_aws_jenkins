@@ -16,7 +16,10 @@ import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ym.batch.job.airkorea.item.ApiCallManageVo;
 import ym.batch.job.airkorea.repository.AirKoreaMapper;
+import ym.batch.job.common.status.CallDiv;
+import ym.batch.job.common.status.TreateStts;
 
 import java.util.List;
 
@@ -41,8 +44,12 @@ public class AirDataCallRegistTask implements Tasklet, StepExecutionListener {
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
         List<String> stationNames = airKoreaMapper.selectStationName();
+        ApiCallManageVo apiCallManageVo = new ApiCallManageVo();
         for(String stationName : stationNames){
-            airKoreaMapper.insertAirdata(stationName);
+            apiCallManageVo.setCallDiv(CallDiv.AIRDATA.getStatusCode());
+            apiCallManageVo.setParam(stationName);
+            apiCallManageVo.setTreateStts(TreateStts.WAIT.getTreateSttsCode());
+            airKoreaMapper.insertAirdata(apiCallManageVo);
         }
         logger.info("AirDataCallRegistTask execute");
         return RepeatStatus.FINISHED;
