@@ -25,9 +25,9 @@ spring:
   profiles: real
   datasource:
     hikari:
-      jdbc-url: ENC(kCI87baayXzDmzEyk9Y/67F46cgFqok1DzaoNULeZ8EvC/adfvoFukiRWU5e1FDQFELNq4NuZ94T+ERTmpGEtk0Q04ITNYf7MK9QM84pzhdZGPaY5Samw9qOL2eU0Tdjr7sjc9Lv2aoNWDu2+p1U+A/B6T7frPpUu45+2WFM10/+U3UoJ9jiH/7ItdzJwnC0rbg0DvuJP5/tJQcIbSS+pg==)
-      username: ENC(tJaNGcK+tTmCmppOWdAOQwZynaCO8jdOKW5D9ZBH1PA=)
-      password: ENC(vg1XlJIZbUuCC3mYLcFTaOLXxAXtIVWnaMOsfS6pck4=)
+      jdbc-url: ENC(wX2W1EeJ1t4MdYYiqROeA+ekN2hAj6SKesumbVx0hoRJ4tlKlz/Zv4xoL0KHYgi794hCbfLnjxc18/Kyg5OyV55fMASUmY96qkEbMLYgzlInHfFBrT9HAW8xLOazy5lMqDcCufo0dgXn0EdVfsHmNCIbQrFR5QHGM3d8uh8FA2ALlbUw2hV8N30KZ0atFGfwebfs1k63ncHYCajJB9aA2w==)
+      username: ENC(bsYmN3qYRLXEx+c845WRV/eIWxfr2fWeaqyCkvg99W0=)
+      password: ENC(etdqkaXWoqB29Q4hoZS5gbQhyJCfoytj2HCG+29UTug=)
       driver-class-name: com.mysql.cj.jdbc.Driver
       logging:
         level: debug
