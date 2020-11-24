@@ -134,7 +134,9 @@ public class AirKoreaService extends ApiCommonService {
                                                     .map(station -> station.getApiCallManageSeq())
                                                     .collect(Collectors.toList());
         // 정상적으로 호출된 api_call은 상태값을 WT => DN 처리
-        airKoreaMapper.updateTreeteStts(apiCallManageSrls);
+        if(!apiCallManageSrls.isEmpty()){
+            airKoreaMapper.updateTreeteStts(apiCallManageSrls);
+        }
         return parseAirData;
     }
 

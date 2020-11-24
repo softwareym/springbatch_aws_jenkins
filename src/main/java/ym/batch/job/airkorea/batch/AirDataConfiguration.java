@@ -20,6 +20,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.ResourceAccessException;
 import ym.batch.job.airkorea.item.AirData;
 import ym.batch.job.airkorea.service.AirKoreaService;
+import ym.batch.job.common.service.UniqueRunIdIncrementer;
 
 import javax.sql.DataSource;
 import java.net.ConnectException;
@@ -70,6 +71,7 @@ public class AirDataConfiguration {
     public Job airDataJob(){
         return jobBuilderFactory.get("airDataJob")
                 .start(airDataStep())
+                .incrementer(new UniqueRunIdIncrementer())
                 .build();
     }
 

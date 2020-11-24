@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ym.batch.job.airkorea.repository.AirKoreaMapper;
 import ym.batch.job.airkorea.service.AirKoreaService;
+import ym.batch.job.common.service.UniqueRunIdIncrementer;
 
 import javax.sql.DataSource;
 
@@ -28,6 +29,7 @@ public class AirDataCallRegistConfiguration {
         return jobBuilderFactory
                 .get("airDataCallRegistJob")
                 .start(airDataCallRegist())
+                .incrementer(new UniqueRunIdIncrementer())
                 .build();
     }
 
