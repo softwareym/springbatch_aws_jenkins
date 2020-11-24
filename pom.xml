@@ -9,8 +9,13 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ym.batch</groupId>
-    <artifactId>demo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+
+    <!--jar : create target directory-->
+    <artifactId>ym</artifactId>
+    <version>BatchJar</version>
+    <packaging>jar</packaging>
+    <!--//jar-->
+
     <name>demo</name>
     <description>Demo maven project for Spring Boot</description>
 
@@ -136,6 +141,20 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <!--<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>ym.batch.DemoApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>-->
         </plugins>
     </build>
 
