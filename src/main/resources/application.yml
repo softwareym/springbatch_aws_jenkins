@@ -8,6 +8,8 @@ jasypt:
 spring:
   profiles:
     active: real
+  pid:
+    file: boot.pid
 
 spring.batch.job.names: ${job.name:NONE}
 ---

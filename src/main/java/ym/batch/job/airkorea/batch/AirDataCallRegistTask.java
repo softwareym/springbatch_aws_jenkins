@@ -49,7 +49,7 @@ public class AirDataCallRegistTask implements Tasklet, StepExecutionListener {
             apiCallManageVo.setCallDiv(CallDiv.AIRDATA.getStatusCode());
             apiCallManageVo.setParam(stationName);
             apiCallManageVo.setTreateStts(TreateStts.WAIT.getTreateSttsCode());
-            airKoreaMapper.insertAirdata(apiCallManageVo);
+            airKoreaMapper.insertAirdataCallRegist(apiCallManageVo);
         }
         logger.info("AirDataCallRegistTask execute");
         return RepeatStatus.FINISHED;
