@@ -50,7 +50,8 @@ public class AirKoreaService extends ApiCommonService {
         qParam.put("_returnType", "json");
 
         UriComponentsBuilder callUrl = urlMake(url, serviceKey, qParam);          //요청 url&파라미터 생성
-        String response = getResponse(callUrl);        //요청한 응답데이터 get
+        String response = (String)getResponse(callUrl);        //요청한 응답데이터 get
+        checkBadResponse(response);
 
         List<Station> collectData = new ArrayList<>();
         collectData = (List<Station>) getStationDataParse(response);     //json data parsing
@@ -124,7 +125,8 @@ public class AirKoreaService extends ApiCommonService {
             qParam.put("_returnType", "json");
 
             UriComponentsBuilder callUrl = urlMake(url, serviceKey, qParam);          //요청 url&파라미터 생성
-            String response = getResponse(callUrl);        //요청한 응답데이터 get
+            String response = (String)getResponse(callUrl);        //요청한 응답데이터 get
+            checkBadResponse(response);
       //            Thread.sleep(2000); //1000 : 1초//            parseAirData =  getAirDataParse(response, stationList.get(i).toString());     //json data parsing
             getAirDataParse(response, stationList.get(i).toString());     //json data parsing
       //      System.out.println("[***]  : " +parseAirData.size());
