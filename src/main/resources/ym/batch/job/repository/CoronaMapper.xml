@@ -3,12 +3,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="ym.batch.job.repository.KoronaMapper">
+<mapper namespace="ym.batch.job.repository.CoronaMapper">
 
 
-    <insert id="insertCoronaRegist" parameterType="ym.batch.job.korona.item.KoronaVo">
+    <insert id="insertCoronaRegist" parameterType="ym.batch.job.Corona.item.CoronaVo">
 		INSERT INTO corona_summary
-        (country_name,newCase,totalCase,recovered,percentage,death,newCcase,newFcase,create_dt)
+        (countryName,newCase,totalCase,recovered,percentage,death,newCcase,newFcase,create_dt)
         VALUES(
         #{countryName} , #{newCase}, #{totalCase}, #{recovered}, #{percentage}, #{death}, #{newCcase},#{newFcase}, now()
         )
