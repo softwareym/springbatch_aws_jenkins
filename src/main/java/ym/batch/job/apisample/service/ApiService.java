@@ -40,7 +40,8 @@ public class ApiService extends ApiCommonService {
         qParam.put("_returnType", "json");
 
         UriComponentsBuilder callUrl = urlMake(url, serviceKey, qParam);          //요청 url&파라미터 생성
-        String response = getResponse(callUrl);        //요청한 응답데이터 get
+        String response = (String)getResponse(callUrl);        //요청한 응답데이터 get
+        checkBadResponse(response);
 
         List<MicroDust> collectData = new ArrayList<>();
         collectData = (List<MicroDust>) getDataParse(response);     //json data parsing

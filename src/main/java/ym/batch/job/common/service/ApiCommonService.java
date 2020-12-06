@@ -2,11 +2,9 @@ package ym.batch.job.common.service;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -19,7 +17,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Map;
-import java.util.Optional;
 
 @AllArgsConstructor
 public abstract class ApiCommonService implements ApiCommonInterface {
@@ -39,9 +36,11 @@ public abstract class ApiCommonService implements ApiCommonInterface {
         UriComponentsBuilder uri = UriComponentsBuilder.fromHttpUrl(url).queryParam("serviceKey",decodeServiceKey);
 
         //요청파라미터 생성
-        MultiValueMap<String, String> requestParam = new LinkedMultiValueMap<>();
-        requestParam.setAll(qParam);
-        uri.queryParams(requestParam);
+        if(qParam !=null){
+            MultiValueMap<String, String> requestParam = new LinkedMultiValueMap<>();
+            requestParam.setAll(qParam);
+            uri.queryParams(requestParam);
+        }
 
         return uri;
     }
@@ -54,17 +53,21 @@ public abstract class ApiCommonService implements ApiCommonInterface {
     //@SneakyThrows 어노테이션을 사용한 메소드에서 예외가 발생하면 catch문에서 e.printStackTrace(); 메소드를 호출한 것과 같이 예외가 출력된다
     @SneakyThrows
     @Override
-    public String getResponse(UriComponentsBuilder uri) {
+    public Object getResponse(UriComponentsBuilder uri) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         RestTemplate restTemplate = new RestTemplate();
 
         UriComponents uriComp = uri.build(false);
-        String response = restTemplate.getForObject(uriComp.toUriString(), String.class);
+        Object response = restTemplate.getForObject(uriComp.toUriString(), Object.class);
         Thread.sleep(5000); //1000 : 1초
 
-        if("<".equals(String.valueOf(response.charAt(0)))){             //정상적인 응답 아닐경우 xml 리턴
+        return response;
+    }
+
+    public void checkBadResponse(String response){
+        if("<".equals(String.valueOf(response.charAt(0)))){ //정상적인 응답 아닐경우 xml 리턴
             response = null;
 
             if(response.contains("SERVICE KEY IS NOT REGISTERED ERROR")){
@@ -81,7 +84,6 @@ public abstract class ApiCommonService implements ApiCommonInterface {
                         , HttpStatus.BAD_REQUEST);
             }
         }
-        return response;
     }
 
     @Override

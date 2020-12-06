@@ -67,7 +67,8 @@ public class AirKoreaServiceTest extends ApiCommonService {
         qParam.put("_returnType", "json");
 
         UriComponentsBuilder callUrl = urlMake(measureStationUrl, servicekey, qParam);          //요청 url&파라미터 생성
-        String response = getResponse(callUrl);
+        String response = (String)getResponse(callUrl);
+        checkBadResponse(response);
 
         //when
         List<Station> collectData = new ArrayList<>();

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ym.batch.job.repository.KoronaMapper">
+
+
+    <insert id="insertCoronaRegist" parameterType="ym.batch.job.korona.item.KoronaVo">
+		INSERT INTO corona_summary
+        (country_name,newCase,totalCase,recovered,percentage,death,newCcase,newFcase,create_dt)
+        VALUES(
+        #{countryName} , #{newCase}, #{totalCase}, #{recovered}, #{percentage}, #{death}, #{newCcase},#{newFcase}, now()
+        )
+	</insert>
+
+</mapper>
+
