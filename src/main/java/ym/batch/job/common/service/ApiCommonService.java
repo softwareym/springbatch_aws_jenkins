@@ -36,9 +36,11 @@ public abstract class ApiCommonService implements ApiCommonInterface {
         UriComponentsBuilder uri = UriComponentsBuilder.fromHttpUrl(url).queryParam("serviceKey",decodeServiceKey);
 
         //요청파라미터 생성
-        MultiValueMap<String, String> requestParam = new LinkedMultiValueMap<>();
-        requestParam.setAll(qParam);
-        uri.queryParams(requestParam);
+        if(qParam !=null){
+            MultiValueMap<String, String> requestParam = new LinkedMultiValueMap<>();
+            requestParam.setAll(qParam);
+            uri.queryParams(requestParam);
+        }
 
         return uri;
     }

@@ -57,7 +57,7 @@ public class ApiCommonServiceTest {
         UriComponentsBuilder uri = apiCommonService.urlMake(airDataUrl, servicekey, qParam);
 
         //when
-        String response = apiCommonService.getResponse(uri);
+        String response = (String)apiCommonService.getResponse(uri);
 
         //then
         assertNotNull(response);
