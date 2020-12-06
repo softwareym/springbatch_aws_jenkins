@@ -1,10 +1,10 @@
 # SpringBatch Toy Project
 spring batch maven 설정부터 배치 개발, aws, jenkins 배포까지 
 
-* Spring Batch
- https://blog.naver.com/spell2126/222111871644
- https://blog.naver.com/spell2126/222111898121
- https://blog.naver.com/spell2126/222111901631
+* Spring Batch    
+ https://blog.naver.com/spell2126/222111871644    
+ https://blog.naver.com/spell2126/222111898121    
+ https://blog.naver.com/spell2126/222111901631    
 
 * [Springboot] 설정파일(properties, yml) 암호화 적용방법
  https://blog.naver.com/spell2126/222135191503
