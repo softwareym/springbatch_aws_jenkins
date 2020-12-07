@@ -60,7 +60,13 @@ public abstract class ApiCommonService implements ApiCommonInterface {
         RestTemplate restTemplate = new RestTemplate();
 
         UriComponents uriComp = uri.build(false);
-        Object response = restTemplate.getForObject(uriComp.toUriString(), Object.class);
+        Object response = null;
+        if("openapi.airkorea.or.kr".equals(uriComp.getHost())){
+            response = restTemplate.getForObject(uriComp.toUriString(), String.class);
+        }
+        if("api.corona-19.kr".equals(uriComp.getHost())){
+            response = restTemplate.getForObject(uriComp.toUriString(), Object.class);
+        }
         Thread.sleep(5000); //1000 : 1초
 
         return response;
