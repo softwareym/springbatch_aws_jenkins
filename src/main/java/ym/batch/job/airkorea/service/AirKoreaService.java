@@ -15,13 +15,11 @@ import ym.batch.job.airkorea.item.ApiCallManageDto;
 import ym.batch.job.airkorea.item.ApiCallManageVo;
 import ym.batch.job.airkorea.item.Station;
 import ym.batch.job.airkorea.repository.AirKoreaMapper;
-import ym.batch.job.common.constant.DateFormat;
 import ym.batch.job.common.service.ApiCommonService;
 import ym.batch.job.common.status.CallDiv;
 import ym.batch.job.common.status.TreateStts;
 
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -128,7 +126,7 @@ public class AirKoreaService extends ApiCommonService {
             String response = (String)getResponse(callUrl);        //요청한 응답데이터 get
             checkBadResponse(response);
       //            Thread.sleep(2000); //1000 : 1초//            parseAirData =  getAirDataParse(response, stationList.get(i).toString());     //json data parsing
-            getAirDataParse(response, stationList.get(i).toString());     //json data parsing
+            getAirDataParse(response, stationList.get(i).getParam());     //json data parsing
       //      System.out.println("[***]  : " +parseAirData.size());
         }
 

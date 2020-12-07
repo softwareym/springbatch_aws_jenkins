@@ -1,4 +1,4 @@
-package ym.batch.job.korona.repository;
+package ym.batch.job.Corona.repository;
 
 
 import junit.framework.TestCase;
@@ -11,10 +11,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class KoronaMapperTests extends TestCase {
+public class CoronaMapperTests extends TestCase {
 
     @Autowired
-    private KoronaMapper mapper;
+    private CoronaMapper mapper;
 
     @Test
     @DisplayName("Corona_api_data_insert_확인")

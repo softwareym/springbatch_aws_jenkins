@@ -1,4 +1,4 @@
-package ym.batch.job.korona.batch;
+package ym.batch.job.Corona.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,21 +8,19 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ym.batch.job.airkorea.batch.AirDataCallRegistTask;
-import ym.batch.job.airkorea.repository.AirKoreaMapper;
 import ym.batch.job.common.service.UniqueRunIdIncrementer;
-import ym.batch.job.korona.repository.KoronaMapper;
-import ym.batch.job.korona.service.KoronaService;
+import ym.batch.job.Corona.repository.CoronaMapper;
+import ym.batch.job.Corona.service.CoronaService;
 
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-public class KoronaRegistConfiguration {
+public class CoronaRegistConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-    private final KoronaService koronaService;
-    private final KoronaMapper koronaMapper;
+    private final CoronaService koronaService;
+    private final CoronaMapper koronaMapper;
 
     @Bean
     public Job koronaRegistJob() {
@@ -37,7 +35,7 @@ public class KoronaRegistConfiguration {
     protected Step koronaRegist() {
         return stepBuilderFactory
                 .get("koronaRegist")
-                .tasklet(new KoronaRegistTask(koronaService , koronaMapper))
+                .tasklet(new CoronaRegistTask(koronaService , koronaMapper))
                 .build();
     }
 

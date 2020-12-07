@@ -1,7 +1,6 @@
-package ym.batch.job.korona.service;
+package ym.batch.job.Corona.service;
 
 import junit.framework.TestCase;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -13,9 +12,9 @@ import java.io.UnsupportedEncodingException;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class KoronaServiceTests extends TestCase {
+public class CoronaServiceTests extends TestCase {
     @Autowired
-    private KoronaService service;
+    private CoronaService service;
 
 
     @Test

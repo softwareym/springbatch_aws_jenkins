@@ -21,7 +21,7 @@
        and call_div = #{callDiv}
        and treate_stts = #{treateStts}
        and work_date = #{workDate}
-       limit 0 , 100
+       limit 0 , 50
     </select>
 
     <update id="insertAirdata" parameterType="java.util.HashMap">
