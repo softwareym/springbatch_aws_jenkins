@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ym.batch.job.repository.CommonMapper">
+
+
+    <insert id="insertUser" parameterType="ym.batch.job.common.item.UserVo">
+		INSERT INTO users
+        (name,stationName,email)
+        VALUES(
+        #{name} , #{stationName}, #{email}
+        )
+	</insert>
+
+    <select id="selectUsersByStationName" parameterType="ym.batch.job.common.item.UserVo" resultType="ym.batch.job.common.item.UserDto">
+        select
+            name
+            ,email
+        from users
+        where 1=1
+        and stationName = #{stationName}
+	</select>
+
+</mapper>
+
