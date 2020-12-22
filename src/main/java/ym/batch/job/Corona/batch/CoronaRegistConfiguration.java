@@ -8,6 +8,8 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ym.batch.job.Corona.producer.CoronaSendProducer;
+import ym.batch.job.common.repository.CommonMapper;
 import ym.batch.job.common.service.UniqueRunIdIncrementer;
 import ym.batch.job.Corona.repository.CoronaMapper;
 import ym.batch.job.Corona.service.CoronaService;
@@ -19,8 +21,10 @@ public class CoronaRegistConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-    private final CoronaService koronaService;
-    private final CoronaMapper koronaMapper;
+    private final CoronaService coronaService;
+    private final CoronaMapper coronaMapper;
+    private final CommonMapper commonMapper;
+    private final CoronaSendProducer coronaSendProducer;
 
     @Bean
     public Job koronaRegistJob() {
@@ -35,7 +39,7 @@ public class CoronaRegistConfiguration {
     protected Step koronaRegist() {
         return stepBuilderFactory
                 .get("koronaRegist")
-                .tasklet(new CoronaRegistTask(koronaService , koronaMapper))
+                .tasklet(new CoronaRegistTask(coronaService, coronaMapper, commonMapper, coronaSendProducer))
                 .build();
     }
 
